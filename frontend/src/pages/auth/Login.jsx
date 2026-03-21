@@ -22,10 +22,8 @@ function Login() {
       // ✅ Store token
       localStorage.setItem("token", res.data.token);
 
-      alert("Login successful");
-
-      // ✅ Redirect to dashboard
-      navigate("/dashboard");
+      console.log(res.data);
+      
 
     } catch (error) {
       alert(error.response?.data?.message || "Login failed");
@@ -35,8 +33,8 @@ function Login() {
   return (
     <div className="login_container">
     <div className="left" style={{ padding: "40px" }}>
-      <h1>Login</h1>
-
+      <img src="/user.png" alt="user illasturation" />
+      <br />
       <form onSubmit={handleSubmit}>
 
         <input
@@ -60,13 +58,14 @@ function Login() {
         <br /><br />
 
         <button type="submit">Login</button>
-        <p>
-        Don't have an account? <Link to="/register">Register</Link>
-      </p>
+        <p className="auth-text">
+          Don't have an account? 
+          <Link to="/register" className="auth-link"> Register</Link>
+        </p>
       </form>
     </div>
     <div className="right">
-        
+        <img src="/loginimg.png" alt="" />
     </div>
     </div>
   );
