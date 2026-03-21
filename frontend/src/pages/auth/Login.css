@@ -1,0 +1,75 @@
+.body{
+  background-color: #FFDBFD;
+}
+.login_container{
+    display: grid;
+      grid-template-columns: 60% 40%;
+      height: 100vh;
+}
+.left form{
+  width: 100%;
+  max-width: 350px;
+}
+.left h1 {
+  font-size: 34px;
+  font-weight: 700;
+  color: #7B2A9B;
+  margin-bottom: 25px;
+  letter-spacing: 1px;
+  position: relative;
+}
+.left h1::after {
+  content: "";
+  width: 85px;
+  height: 4px;
+  background-color: #7B2A9B;
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  border-radius: 2px;
+}
+.left input{
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #7b2a9b98;
+  font-size: 14px;
+  
+
+  outline: none;
+  transition: all 0.3s ease;
+}
+.left input:hover {
+  border-color: #7B2A9B;
+  box-shadow: 0 0 0 3px rgba(99, 103, 255, 0.2);
+}
+.left input:focus {
+  border-color: #7B2A9B;
+  box-shadow: 0 0 0 3px rgba(99, 103, 255, 0.2);
+}
+.left input::placeholder {
+  color: #aaa;
+  font-size: 13px;
+}
+
+.left button{
+  width: 100%;
+  background-color: #7B2A9B;
+  color: white;
+  border-radius: 10px;
+  padding: 10px;   
+  cursor: pointer;
+  border: none;
+}
+.left{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.right{
+  background: #7b2a9b;
+  background: linear-gradient(181deg,rgba(123, 42, 155, 1) 0%, rgba(99, 103, 255, 1) 100%);
+  padding: 20px;
+  color: white;
+}
