@@ -1,44 +1,90 @@
-.body{
-  background-color: #FFDBFD;
-}
 .login_container{
-    display: grid;
-      grid-template-columns: 60% 40%;
-      height: 100vh;
+      min-height: 100vh;
+      background: linear-gradient(168deg,rgba(165, 119, 241, 1) 0%, rgba(0, 110, 221, 1) 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
 }
-.left form{
+.left, .right {
+  height: 100%;
+}
+.left {
+  background: white;
+  color: black;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  padding: 40px;
+}
+.right {
+  background: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+}
+
+.right img {
+  width: 100%;
+  max-width: 700px;
+  animation: float 2.5s ease-in-out infinite;
+}
+.login_card{
+  padding: 0;
+  background:white;
+  width: 100%;
+  max-width: 1000px;
+  margin: 10px;
+
+  display: grid;
+  grid-template-columns: 50% 50%;
+
+  border-radius: 20px;
+  overflow: hidden;
+
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+}
+.login_card form{
   width: 100%;
   max-width: 350px;
 }
 .left img{
   width: 100%;
   max-width: 140px;
+  filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
 }
-.left input{
+.login_card input{
   width: 100%;
   padding: 12px;
   margin-bottom: 15px;
 
-  border: 2px solid #000000;
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.4);
 
+  border-radius: 8px;
   outline: none;
   font-size: 14px;
+  color: rgb(0, 0, 0);
 }
-.left input:hover {
+.login_card input:hover {
+  border-color: white;
+  box-shadow: 0 0 0 3px rgba(99, 103, 255, 0.2);
+}
+.login_card input:focus {
   border-color: #7B2A9B;
   box-shadow: 0 0 0 3px rgba(99, 103, 255, 0.2);
 }
-.left input:focus {
-  border-color: #7B2A9B;
-  box-shadow: 0 0 0 3px rgba(99, 103, 255, 0.2);
-}
-.left input::placeholder {
-  color: #aaa;
+.login_card input::placeholder {
+  color: rgba(0, 0, 0, 0.7);
   font-size: 13px;
 }
 
-.left button {
+.login_card button {
   width: 100%;
   padding: 12px;
 
@@ -53,59 +99,25 @@
   transition: 0.3s;
 }
 
-.left button:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
+.login_card button:hover {
+  transform: translateY(-2px);
 }
-.left{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.right{
-  background: #7b2a9b;
-  background: linear-gradient(181deg,rgba(123, 42, 155, 1) 0%, rgba(99, 103, 255, 1) 100%);
-  padding: 20px;
-  color: white;
-}
+
 .auth-text {
   margin-top: 10px;
   font-size: 14px;
-  color: #555;
+  color: #000000;
 }
 
 .auth-link {
-  color: #2575fc;
-  font-weight: 600;
+  color: rgb(0, 47, 255);
+  font-size: 15px;
+  font-weight: 400;
   text-decoration: none;
 }
 
 .auth-link:hover {
   text-decoration: underline;
-}
-.right{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0px 0px 100px 0px rgba(0, 0, 0, 0.457);
-}
-.right img {
-  width: 100%;
-  max-width: 600px;
-  animation: float 4s ease-in-out infinite;
-  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));
-}
-
-
-@media (max-width: 1000px) {
-  .login_container {
-    grid-template-columns: 100%;
-  }
-
-  .right {
-    display: none;  /* hide image on mobile */
-  }
 }
 
 @keyframes float {
@@ -113,7 +125,7 @@
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-30px);
+    transform: translateY(-15px);
   }
   100% {
     transform: translateY(0px);

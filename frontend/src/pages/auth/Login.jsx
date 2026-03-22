@@ -34,7 +34,8 @@ function Login() {
 
   return (
     <div className="login_container">
-    <div className="left" style={{ padding: "40px" }}>
+    <div className="login_card">
+      <div className="left">
       <img src="/user.png" alt="user illasturation" />
       <br />
       <form onSubmit={handleSubmit}>
@@ -65,9 +66,11 @@ function Login() {
           <Link to="/register" className="auth-link"> Register</Link>
         </p>
       </form>
-    </div>
-    <div className="right">
+      </div>
+      <div className="right">
         <img src="/loginimg.png" alt="" />
+        
+      </div>
     </div>
     </div>
   );
