@@ -23,6 +23,8 @@ function Login() {
       localStorage.setItem("token", res.data.token);
 
       console.log(res.data);
+
+      navigate("/products");
       
 
     } catch (error) {

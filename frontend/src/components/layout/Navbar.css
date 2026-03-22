@@ -1,0 +1,30 @@
+.navbar_container{
+    width: 100%;
+    height: 50px;
+    background: black
+}
+
+ul{
+    display: flex;
+    list-style-type: none;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+}
+li{
+    padding: 10px;
+}
+li:hover{
+    background: linear-gradient(181deg,rgba(123, 42, 155, 0.483) 0%, rgba(99, 104, 255, 0.575) 100%);
+}
+a,.logout{
+    text-decoration: none;   
+  color: white;
+  font-weight: 500;
+  transition: 0.3s;
+}
+ul li:first-child {
+  margin-right: auto;
+}
+
+

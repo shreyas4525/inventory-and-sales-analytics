@@ -14,29 +14,12 @@
   width: 100%;
   max-width: 140px;
 }
-.left h1 {
-  margin-bottom: 20px;
-  font-weight: 600;
-  color: #6a11cb;
-  border-bottom: 3px solid #6a11cb;
-  padding-bottom: 5px;
-}
-.left h1::after {
-  content: "";
-  width: 85px;
-  height: 4px;
-  background-color: #7B2A9B;
-  position: absolute;
-  left: 0;
-  bottom: -8px;
-  border-radius: 2px;
-}
 .left input{
   width: 100%;
   padding: 12px;
   margin-bottom: 15px;
 
-  border: 1px solid #716f6f;
+  border: 2px solid #000000;
   border-radius: 8px;
 
   outline: none;
@@ -59,7 +42,7 @@
   width: 100%;
   padding: 12px;
 
-  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  background: black;
   color: white;
 
   border: none;
