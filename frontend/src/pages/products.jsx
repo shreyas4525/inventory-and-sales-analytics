@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Product.css";
+import API from "../api/axios";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
-  // Fetch products of logged-in user
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -17,59 +20,94 @@ const Products = () => {
       .then(data => setProducts(data));
   }, []);
 
+  // Filter products
+  const filteredProducts = products.filter(p =>
+    p.name.toLowerCase().includes(search.toLowerCase())
+  );
+  const handleDelete = async (id) => {
+  try {
+    await API.delete(`/products/${id}`);
+
+    setProducts((prev) => prev.filter((p) => p._id !== id));
+
+  } catch (err) {
+    console.log(err);
+  }
+};
+
   return (
-    <div className="products_container">
-
-      <h1>My Products</h1>
-
-      {/* Add Button */}
-      <div className="top_bar">
-        <button className="add_btn">+ Add Product</button>
+    <div className="products_page">
+    <h2>Products</h2>
+      {/* Header */}
+      <div className="header">
+        <div className="controls">
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <button className="filter">Filters</button>
       </div>
 
-      {/* Cards */}
-      <div className="card_grid">
-        {products.map((item) => (
-          <div className="product_card" key={item._id}>
+      <div className="actions">
+          <button className="new" onClick={() => navigate("/products/create")}>+ New Product</button>
+      </div>
+      </div>
 
-            <h2>{item.name}</h2>
+      {/* Table */}
+      <div className="table_container">
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Cost</th>
+              <th>Selling</th>
+              <th>Stock</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
 
-            <p><strong>Category:</strong> {item.category || "—"}</p>
+          <tbody>
+            {filteredProducts.map((item) => (
+              <tr key={item._id}>
 
-            <p><strong>Cost:</strong> ₹{item.costPrice}</p>
-            <p><strong>Selling:</strong> ₹{item.sellingPrice}</p>
+                <td className="product">
+                  <img src="/productcard.jpg" alt="" />
+                  <span>{item.name}</span>
+                </td>
 
-            <p className={item.stock < 10 ? "low_stock" : ""}>
-              <strong>Stock:</strong> {item.stock}
-            </p>
+                <td>{item.category || "—"}</td>
+                <td>₹{item.costPrice}</td>
+                <td>₹{item.sellingPrice}</td>
 
-            <p>
-              <strong>Profit:</strong> ₹{item.sellingPrice - item.costPrice}
-            </p>
+                <td className={item.stock < 0 ? "low_stock" : ""}>
+                  {item.stock}
+                </td>
 
-            <p>
-              <strong>Supplier:</strong><br />
-              {item.supplier?.name} <br />
-              <small>{item.supplier?.phone}</small>
-            </p>
+                <td>
+                  <span className={`status ${item.stock === 0 ? "out" : "active"}`}>
+                    {item.stock === 0 ? "Out of Stock" : "Active"}
+                  </span>
+                </td>
 
-            {/* Status */}
-            <div className="status">
-              {item.stock < 10 ? (
-                <span className="low">Low Stock</span>
-              ) : (
-                <span className="ok">In Stock</span>
-              )}
-            </div>
+                <td className="actions_btns">
+                  <button className="edit">Edit</button>
+                  <button className="delete" onClick={() => handleDelete(item._id)}>Delete</button>
+                  <button 
+                      className="cart"
+                      onClick={() => addToCart(item)}
+                    >
+                      Add to Cart
+                    </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
 
-            {/* Actions */}
-            <div className="actions">
-              <button className="edit">Edit</button>
-              <button className="delete">Delete</button>
-            </div>
-
-          </div>
-        ))}
+        </table>
       </div>
 
     </div>

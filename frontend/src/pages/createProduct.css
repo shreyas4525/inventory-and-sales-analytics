@@ -1,0 +1,214 @@
+.create_product_page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: #f4f6f9; /* clean light background */
+}
+
+/* Card */
+.form_container {
+  background: white;
+  padding: 35px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Heading */
+.form_container h2 {
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Inputs */
+.form_container input {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 12px;
+
+  border-radius: 10px;
+  border: 1px solid #ddd;
+
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.form_container input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+/* Row (cost + selling) */
+.row {
+  display: flex;
+  gap: 10px;
+}
+
+/* Button */
+.form_container button {
+  width: 100%;
+  padding: 12px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #111; /* black button */
+  color: white;
+
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.form_container button:hover {
+  background: #333;
+}
+
+/* Disabled */
+.form_container button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.create_product_page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: #f4f6f9; /* clean light background */
+}
+
+/* Card */
+.form_container {
+  background: white;
+  padding: 35px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Heading */
+.form_container h2 {
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Inputs */
+.form_container input {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 12px;
+
+  border-radius: 10px;
+  border: 1px solid #ddd;
+
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.form_container input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+
+/* Button */
+.form_container button {
+  width: 100%;
+  padding: 12px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #111; /* black button */
+  color: white;
+
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.form_container button:hover {
+  background: #333;
+}
+
+/* Disabled */
+.form_container button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.upload_box {
+  position: relative;
+
+  width: 100%;
+  height: 180px; /* 🔥 square-like box */
+
+  border: 2px dashed #bbb;
+  border-radius: 12px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  cursor: pointer;
+
+  background: #fafafa;
+  transition: 0.3s;
+}
+
+/* Hover effect */
+.upload_box:hover {
+  border-color: #333;
+  background: #f0f0f0;
+}
+
+/* Text inside */
+.upload_box p {
+  font-size: 14px;
+  color: #666;
+  pointer-events: none;
+}
+
+/* Hide input */
+.upload_box input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Image preview */
+.upload_box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 10px;
+}
