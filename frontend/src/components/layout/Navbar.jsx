@@ -16,6 +16,7 @@ function Navbar() {
         <li><Link to="/Products">inventory</Link></li>
         <li><Link to="/products">Products</Link></li>
         <li><Link to="/dashboard">dashboard</Link></li>
+        <li><Link to="/cart">cart</Link></li>
         <li onClick={handleLogout} className="logout">Logout</li>
       </ul>
     </nav>

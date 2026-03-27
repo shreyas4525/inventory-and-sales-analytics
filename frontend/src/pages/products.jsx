@@ -5,7 +5,9 @@ import API from "../api/axios";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
+  const categories = ["all", ...new Set(products.map(p => p.category).filter(Boolean))];
   const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("all");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,9 +23,12 @@ const Products = () => {
   }, []);
 
   // Filter products
-  const filteredProducts = products.filter(p =>
-    p.name.toLowerCase().includes(search.toLowerCase())
-  );
+const filteredProducts = products.filter(p => {
+  const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
+  const matchesCategory = category === "all" || p.category === category;
+
+  return matchesSearch && matchesCategory;
+});
   const handleDelete = async (id) => {
   try {
     await API.delete(`/products/${id}`);
@@ -34,25 +39,50 @@ const Products = () => {
     console.log(err);
   }
 };
+const addToCart = (product) => {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  const existing = cart.find((item) => item._id === product._id);
+
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({ ...product, quantity: 1 });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+};
 
   return (
     <div className="products_page">
-    <h2>Products</h2>
+      <h2>Products</h2>
       {/* Header */}
       <div className="header">
         <div className="controls">
-        <input
-          type="text"
-          placeholder="Search products..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <button className="filter">Filters</button>
-      </div>
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <select
+            className="filter"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            {categories.map((cat, index) => (
+              <option key={index} value={cat}>
+                {cat === "all" ? "All Categories" : cat}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <div className="actions">
-          <button className="new" onClick={() => navigate("/products/create")}>+ New Product</button>
-      </div>
+        <div className="actions">
+          <button className="new" onClick={() => navigate("/products/create")}>
+            + New Product
+          </button>
+        </div>
       </div>
 
       {/* Table */}
@@ -73,7 +103,6 @@ const Products = () => {
           <tbody>
             {filteredProducts.map((item) => (
               <tr key={item._id}>
-
                 <td className="product">
                   <img src="/productcard.jpg" alt="" />
                   <span>{item.name}</span>
@@ -88,28 +117,35 @@ const Products = () => {
                 </td>
 
                 <td>
-                  <span className={`status ${item.stock === 0 ? "out" : "active"}`}>
+                  <span
+                    className={`status ${item.stock === 0 ? "out" : "active"}`}
+                  >
                     {item.stock === 0 ? "Out of Stock" : "Active"}
                   </span>
                 </td>
 
                 <td className="actions_btns">
-                  <button className="edit">Edit</button>
-                  <button className="delete" onClick={() => handleDelete(item._id)}>Delete</button>
-                  <button 
-                      className="cart"
-                      onClick={() => addToCart(item)}
-                    >
-                      Add to Cart
-                    </button>
+                  <button
+                    className="edit"
+                    onClick={() => navigate(`/products/edit/${item._id}`)}
+                  >
+                    <i className="fa-solid fa-pen-to-square" style={{color:" rgb(41, 41, 41)"}}></i>
+                  </button>
+                  <button
+                    className="delete"
+                    onClick={() => handleDelete(item._id)}
+                  >
+                    <i className="fa-solid fa-trash-can"style={{ color: "rgb(79, 79, 79)" }}></i>
+                  </button>
+                  <button className="cart" onClick={() => addToCart(item)}>
+                    <i className="fa-solid fa-cart-shopping" style={{color:" rgb(41, 41, 41)"}}></i>
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
-
         </table>
       </div>
-
     </div>
   );
 };

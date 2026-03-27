@@ -2,40 +2,57 @@ import mongoose from "mongoose";
 
 const saleSchema = new mongoose.Schema(
   {
-    user:{
-    type: mongoose.Schema.Types.ObjectId,
-    ref:"User",
-    required:true
-    },
-    product: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Product",
+      ref: "User",
       required: true
     },
 
-    quantity: {
+    items: [
+      {
+        product: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+          required: true
+        },
+
+        quantity: {
+          type: Number,
+          required: true
+        },
+
+        costPrice: {
+          type: Number,
+          required: true
+        },
+
+        sellingPrice: {
+          type: Number,
+          required: true
+        },
+
+        totalAmount: {
+          type: Number,
+          required: true
+        },
+
+        profit: {
+          type: Number,
+          required: true
+        }
+      }
+    ],
+
+    totalBill: {
       type: Number,
       required: true
     },
 
-    costPrice: {
+    totalProfit: {
       type: Number,
       required: true
     },
 
-    sellingPrice: {
-      type: Number,
-      required: true
-    },
-
-    totalAmount: {
-      type: Number,
-      required: true
-    },
-    profit:{
-      type:Number,
-      required:true
-    },
     soldAt: {
       type: Date,
       default: Date.now

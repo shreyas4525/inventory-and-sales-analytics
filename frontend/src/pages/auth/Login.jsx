@@ -1,31 +1,38 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import "./Login.css";
+import "./Signup.css";
 import API from "../../api/axios";
 
 function Login() {
 
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [form, setForm] = useState({
+    email: "",
+    password: ""
+  });
 
+  // ✅ Handle input change
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  // ✅ Handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await API.post("/auth/login", {
-        email,
-        password
-      });
+      const res = await API.post("/auth/login", form);
 
-      // ✅ Store token
+      // Store token
       localStorage.setItem("token", res.data.token);
 
       console.log(res.data);
 
       navigate("/products");
-      
 
     } catch (error) {
       alert(error.response?.data?.message || "Login failed");
@@ -33,45 +40,60 @@ function Login() {
   };
 
   return (
-    <div className="login_container">
-    <div className="login_card">
-      <div className="left">
-      <img src="/user.png" alt="user illasturation" />
-      <br />
-      <form onSubmit={handleSubmit}>
+    <div className="signup_wrapper">
+      <div className="signup_page">
+        {/* LEFT SIDE */}
+        <div className="signup_left">
+          <h1>Welcome Back</h1>
+          <p className="subtitle">Login to continue 🚀</p>
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e)=>setEmail(e.target.value)}
-          required
-        />
+          <div className="form_container">
+            <form onSubmit={handleSubmit}>
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                placeholder="Email"
+                required
+              />
 
-        <br /><br />
+              <input
+                type="password"
+                name="password"
+                value={form.password}
+                onChange={handleChange}
+                placeholder="Password"
+                required
+              />
+              <div className="forgot_row">
+              <span></span>
+              <a href="#">Forgot password?</a>
+            </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e)=>setPassword(e.target.value)}
-          required
-        />
+              <button type="submit" className="primary_btn">
+                Login
+              </button>
+            </form>
 
-        <br /><br />
+            <button className="google_btn">
+              <img
+                src="https://www.svgrepo.com/show/475656/google-color.svg"
+                alt=""
+              />
+              Continue with Google
+            </button>
+            <p className="login_text">
+              Don't have an account? <Link to="/signup">Sign up</Link>
+            </p>
+          </div>
+        </div>
 
-        <button type="submit">Login</button>
-        <p className="auth-text">
-          Don't have an account? 
-          <Link to="/register" className="auth-link"> Register</Link>
-        </p>
-      </form>
+        {/* RIGHT SIDE */}
+        <div className="signup_right">
+          <img src="/signupimg.jpg" alt="login" />
+        </div>
       </div>
-      <div className="right">
-        <img src="/loginimg.png" alt="" />
-        
-      </div>
-    </div>
     </div>
   );
 }
