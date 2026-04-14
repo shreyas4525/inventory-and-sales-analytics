@@ -1,0 +1,87 @@
+/* Sidebar container */
+.sidebar {
+  width: 220px;
+  height: 100vh;
+  background: #111827;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 20px 15px;
+}
+
+/* Logo */
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* Menu */
+.menu {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.menu li {
+  margin-bottom: 15px;
+  width: 100%;
+  height: 100%;
+  max-height: 50px;
+}
+
+.menu li a {
+  text-decoration: none;
+  color: #9ca3af;
+  font-size: 15px;
+  display: block;
+  padding: 10px 12px;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+/* Hover effect */
+.menu li:hover {
+  background: #1f2937;
+  color: #fff;
+}
+
+/* Active look (optional future) */
+.menu li a.active {
+  background: #3b82f6;
+  color: #fff;
+}
+
+/* Bottom section */
+.bottom {
+  margin-top: auto;
+}
+
+/* Logout button */
+.logout_btn {
+  width: 100%;
+  padding: 10px;
+  background: #ef4444;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.logout_btn:hover {
+  background: #dc2626;
+}
+@media (max-width: 950px) {
+.sidebar{
+  display: none;
+}
+}

@@ -195,6 +195,26 @@ export const getYearlySales = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+export const getLowStockProducts = async (req, res) => {
+  try {
+    const userId = new mongoose.Types.ObjectId(req.user.id);
+    const limit = parseInt(req.query.limit) || 5;
+    const threshold = parseInt(req.query.threshold) || 5;
+
+    const lowStockProducts = await Product.find({
+      user: userId,
+      stock: { $lt: threshold }
+    })
+    .select("name stock category price")
+    .sort({ stock: 1 })
+    .limit(limit);
+
+    res.status(200).json(lowStockProducts);
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 export const getTopProducts = async (req, res) => {
   try {
     const userId = new mongoose.Types.ObjectId(req.user.id);

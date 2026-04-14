@@ -1,107 +1,324 @@
 import "./dashboard.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import {
-  LineChart, Line, XAxis, YAxis, Tooltip, BarChart, Bar, AreaChart, Area
+  LineChart, Line, XAxis, YAxis, Tooltip,
+  BarChart, Bar, Legend, PieChart, Pie,
+  CartesianGrid, ResponsiveContainer
 } from "recharts";
+import Sidebar from "../components/layout/Sidebar";
 
-const lineData = [
-  { time: "09:00", sales: 1 },
-  { time: "10:00", sales: 2.5 },
-  { time: "11:00", sales: 1.8 },
-  { time: "12:00", sales: 3 },
-  { time: "13:00", sales: 1.7 },
-  { time: "14:00", sales: 3 },
-  { time: "15:00", sales: 2 }
-];
-
-const barData = [
-  { name: "Mon", a: 4, b: 2 },
-  { name: "Tue", a: 7, b: 3 },
-  { name: "Wed", a: 5, b: 2 },
-  { name: "Thu", a: 2, b: 1 },
-  { name: "Fri", a: 4, b: 2 },
-  { name: "Sat", a: 6, b: 2 },
-  { name: "Sun", a: 8, b: 3 }
-];
-
-const areaData = Array.from({ length: 30 }, (_, i) => ({
-  day: i + 1,
-  value: Math.floor(Math.random() * 3000) + 1000
-}));
+const COLORS = ["#3b82f6", "#22c55e", "#f59e0b", "#ef4444", "#8b5cf6"];
 
 function Dashboard() {
+
+  const [summary, setSummary] = useState({});
+  const [yearlyData, setYearlyData] = useState([]);
+  const [monthlyData, setMonthlyData] = useState([]);
+  const [categoryData, setCategoryData] = useState([]);
+  const [selectedYear, setSelectedYear] = useState("");
+  const [lowStock, setLowStock] = useState([]);
+  const [topProducts, setTopProducts] = useState([]);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 500);
+
+  // Months mapping
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  useEffect(() => {
+    fetchSummary();
+    fetchYearly();
+    fetchCategory();
+    fetchLowStock();
+    fetchTopProducts();
+
+     const handleResize = () => {
+    setIsMobile(window.innerWidth < 500);
+  };
+
+  window.addEventListener("resize", handleResize);
+
+  return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (selectedYear) {
+      fetchMonthly(selectedYear);
+    }
+  }, [selectedYear]);
+
+  // ================= API CALLS =================
+
+  const fetchSummary = async () => {
+    const res = await axios.get("http://localhost:5000/api/analytics/summary", {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    });
+    setSummary(res.data);
+  };
+
+  const fetchYearly = async () => {
+    const res = await axios.get("http://localhost:5000/api/analytics/yearly-sales", {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    });
+
+    setYearlyData(res.data || []);
+
+    // auto select latest year
+    if (res.data.length > 0) {
+      const latestYear = res.data[res.data.length - 1].year;
+      setSelectedYear(latestYear);
+    }
+  };
+
+  const fetchMonthly = async (year) => {
+    const res = await axios.get(`http://localhost:5000/api/analytics/monthly-sales?year=${year}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    });
+
+    const formatted = (res.data || []).map(item => ({
+      month: months[item.month - 1],
+      totalRevenue: item.totalRevenue,
+      totalProfit: item.totalProfit
+    }));
+
+    setMonthlyData(formatted);
+  };
+
+  const fetchCategory = async () => {
+    const res = await axios.get("http://localhost:5000/api/analytics/profit-category", {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    });
+
+    setCategoryData(res.data || []);
+  };
+  const fetchLowStock = async () => {
+  try {
+    const res = await axios.get("http://localhost:5000/api/analytics/low-stock", {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    });
+    setLowStock(res.data || []);
+  } catch (err) {
+    console.error(err);
+  }
+};
+const fetchTopProducts = async () => {
+  try {
+    const res = await axios.get("http://localhost:5000/api/analytics/top-products", {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    });
+    setTopProducts(res.data || []);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+  // Add colors to pie
+  const coloredData = categoryData.map((item, index) => ({
+    ...item,
+    fill: COLORS[index % COLORS.length]
+  }));
+
   return (
-    <div className="dashboard">
+    <div className="main_layout">
+  <Sidebar />
 
-      {/* HEADER */}
-      <div className="header">
-        <h2>Product Sales Dashboard</h2>
+  <div className="dashboard">
 
-        <div className="filters">
-          <select>
-            <option>All time</option>
-            <option>Yearly</option>
-            <option>this month</option>
-            <option>this week</option>
-            </select>
-          <select><option>Services</option></select>
-          <select><option>Posts</option></select>
-        </div>
+    {/* HEADER */}
+    <h2 className="title">Sales Dashboard</h2>
+
+    {/* CARDS */}
+    <div className="cards">
+      <div className="card blue">
+        <p>Total Revenue</p>
+        <h1>₹{(summary.totalRevenue || 0).toLocaleString("en-IN")}</h1>
       </div>
 
-      {/* TOP GRID */}
-      <div className="top_grid">
+      <div className="card green">
+        <p>Total Profit</p>
+        <h1>₹{(summary.totalProfit || 0).toLocaleString("en-IN")}</h1>
+      </div>
 
-        {/* LEFT CARDS */}
-        <div className="cards">
-          <div className="card">
-            <p>Total Revenue</p>
-            <h1>$86.1</h1>
-          </div>
+      <div className="card">
+        <p>Total Products</p>
+        <h1>{summary.totalProducts || 0}</h1>
+      </div>
 
-          <div className="card">
-            <p>Conversion Rate</p>
-            <h1>26%</h1>
-            <span className="green">↑ 8%</span>
-          </div>
-        </div>
+      <div className="card red">
+        <p>Low Stock</p>
+        <h1>{summary.lowStockProducts || 0}</h1>
+      </div>
+    </div>
 
-        {/* LINE CHART */}
-        <div className="chart_card">
-          <p>Sales Over Time</p>
-          <LineChart width={400} height={200} data={lineData}>
-            <XAxis dataKey="time" />
+    {/* MONTHLY CHART (FULL WIDTH) */}
+    {/* MONTHLY CHART (FULL WIDTH) */}
+<div className="chart_card full_chart">
+  <div className="chart_header">
+    <p>Monthly Sales</p>
+
+    <select
+      value={selectedYear}
+      onChange={(e) => setSelectedYear(e.target.value)}
+    >
+      {yearlyData.map((item) => (
+        <option key={item.year} value={item.year}>
+          {item.year}
+        </option>
+      ))}
+    </select>
+  </div>
+
+  <ResponsiveContainer width="100%" height={isMobile ? 250 : 300}>
+    <LineChart 
+      data={monthlyData}
+      margin={
+        isMobile
+          ? { top: 10, right: 10, left: -10, bottom: 20 }
+          : { top: 10, right: 20, left: 0, bottom: 0 }
+      }
+    >
+      <CartesianGrid strokeDasharray="3 3" />
+
+      <XAxis 
+        dataKey="month"
+        tick={{ fontSize: isMobile ? 12 : 14 }}
+        interval={isMobile ? 0 : "preserveEnd"}
+        angle={isMobile ? -20 : 0}
+        textAnchor={isMobile ? "end" : "middle"}
+      />
+
+      <YAxis tick={{ fontSize: isMobile ? 12 : 14 }} />
+
+      <Tooltip 
+        formatter={(val) => `₹${val.toLocaleString("en-IN")}`}
+        contentStyle={{
+          fontSize: isMobile ? "12px" : "14px",
+          borderRadius: "8px"
+        }}
+      />
+
+      <Legend />
+
+      <Line 
+        type="monotone" 
+        dataKey="totalRevenue" 
+        stroke="#3b82f6" 
+        strokeWidth={isMobile ? 2 : 3}
+        dot={!isMobile}
+      />
+
+      <Line 
+        type="monotone" 
+        dataKey="totalProfit" 
+        stroke="#22c55e" 
+        strokeWidth={isMobile ? 2 : 3}
+        dot={!isMobile}
+      />
+    </LineChart>
+  </ResponsiveContainer>
+</div>
+
+    {/* PIE + YEARLY (50/50 GRID) */}
+    <div className="top_grid">
+
+      {/* PIE */}
+      <div className="chart_card">
+        <p className="chart_title">Profit by Category</p>
+
+        <ResponsiveContainer width="100%" height={260}>
+          <PieChart>
+            <Pie
+              data={coloredData}
+              dataKey="totalProfit"
+              nameKey="category"
+              innerRadius={60}
+              outerRadius={90}
+              paddingAngle={3}
+              label
+            />
+            <Tooltip formatter={(val) => `₹${val}`} />
+            <Legend />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* YEARLY */}
+      <div className="chart_card">
+        <p className="chart_title">Yearly Sales</p>
+
+        <ResponsiveContainer width="100%" height={260}>
+          <BarChart data={yearlyData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="year" />
             <YAxis />
-            <Tooltip />
-            <Line type="monotone" dataKey="sales" stroke="#4ade80" />
-          </LineChart>
-        </div>
-
-        {/* BAR CHART */}
-        <div className="chart_card">
-          <p>Avg Sales Value</p>
-          <BarChart width={400} height={200} data={barData}>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="a" fill="#60a5fa" />
-            <Bar dataKey="b" fill="#4ade80" />
+            <Tooltip formatter={(val) => `₹${val}`} />
+            <Legend />
+            <Bar dataKey="totalRevenue" fill="#3b82f6" radius={[6, 6, 0, 0]} />
+            <Bar dataKey="totalProfit" fill="#22c55e" radius={[6, 6, 0, 0]} />
           </BarChart>
-        </div>
-
-      </div>
-
-      {/* BIG CHART */}
-      <div className="bottom_chart">
-        <p>Sales Conversion Rate</p>
-        <AreaChart width={1000} height={250} data={areaData}>
-          <XAxis dataKey="day" />
-          <YAxis />
-          <Tooltip />
-          <Area type="monotone" dataKey="value" stroke="#8884d8" fill="#8884d8" />
-        </AreaChart>
+        </ResponsiveContainer>
       </div>
 
     </div>
+  <div className="bottom_grid">
+  {/* TOP PRODUCTS */}
+  <div className="chart_card">
+  <p className="chart_title">Top Products</p>
+
+  {topProducts.length > 0 ? (
+    topProducts.map((item, index) => (
+      <div key={index} className="top_product_row">
+
+        <div className="left">
+          <span className="rank">#{index + 1}</span>
+
+          <div>
+            <p className="item_name">{item.name}</p>
+            <span className="item_sub">
+              {item.totalQuantity} sold
+            </span>
+          </div>
+        </div>
+
+        <div className="right">
+          ₹{item.totalProfit.toLocaleString("en-IN")}
+        </div>
+
+      </div>
+    ))
+  ) : (
+    <p className="empty">No data available</p>
+  )}
+</div>
+
+  {/* LOW STOCK */}
+  <div className="chart_card">
+  <p className="chart_title">Low Stock</p>
+
+  {lowStock.length > 0 ? (
+    lowStock.map((item, index) => (
+      <div key={index} className="low_stock_item">
+
+        <div>
+          <p className="item_name">{item.name}</p>
+          <span className="item_sub">{item.category}</span>
+        </div>
+
+        <span className="stock_badge">
+          {item.stock} left
+        </span>
+
+      </div>
+    ))
+  ) : (
+    <p className="empty success">All stocks are good ✅</p>
+  )}
+</div>
+
+</div>
+
+  </div>
+</div>
   );
 }
 
