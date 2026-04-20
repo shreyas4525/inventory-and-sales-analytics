@@ -3,7 +3,7 @@ import { useState } from "react";
 import API from "../api/axios";
 import "./cart.css";
 import { useNavigate } from "react-router-dom";
-
+import Navbar from "../components/layout/Navbar";
 function Cart() {
   const [cart, setCart] = useState(
     JSON.parse(localStorage.getItem("cart")) || []
@@ -66,6 +66,8 @@ function Cart() {
   };
 
   return (
+    <>
+    <Navbar/>
     <div className="cart_page">
       <h2>Cart</h2>
     <div className="cart_wrapper">
@@ -116,6 +118,7 @@ function Cart() {
         </button>
       </div>
     </div>
+    </>
   );
 }
 

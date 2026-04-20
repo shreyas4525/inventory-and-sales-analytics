@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import API from "../../api/axios";
 import { useEffect } from "react";
 import "./signup.css";
+import AuthNavbar from "../../components/layout/authNavbar";
 
 function Signup() {
   const navigate = useNavigate();
@@ -37,6 +38,8 @@ useEffect(() => {
   };
 
   return (
+    <>
+    <AuthNavbar/>
     <div className="signup_wrapper">
     <div className="signup_page">
       
@@ -96,6 +99,7 @@ useEffect(() => {
 
     </div>
     </div>
+    </>
   );
 }
 

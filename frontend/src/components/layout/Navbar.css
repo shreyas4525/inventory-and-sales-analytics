@@ -20,7 +20,7 @@ li{
 li:hover{
     background: rgba(252, 251, 251, 0.159)
 }
-a,.logout{
+a,.inv,.logout{
     text-decoration: none;   
   color: rgb(255, 255, 255);
   font-size: 20px;

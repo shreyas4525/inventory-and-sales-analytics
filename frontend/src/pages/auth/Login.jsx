@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import "./Signup.css";
 import { useEffect } from "react";
 import API from "../../api/axios";
+import AuthNavbar from "../../components/layout/authNavbar";
 
 function Login() {
 
@@ -48,6 +49,8 @@ function Login() {
   };
 
   return (
+    <>
+    <AuthNavbar/>
     <div className="signup_wrapper">
       <div className="signup_page">
         {/* LEFT SIDE */}
@@ -103,6 +106,7 @@ function Login() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

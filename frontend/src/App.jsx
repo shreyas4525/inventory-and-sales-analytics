@@ -1,37 +1,111 @@
 import './App.css';
 import Login from "./pages/auth/Login";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Products from './pages/products';
 import CreateProduct from './pages/createProduct';
-import Navbar from './components/layout/Navbar';
 import UpdateProduct from './pages/updateProduct';
 import Cart from './pages/cart';
 import Signup from './pages/auth/Signup';
 import Dashboard from './pages/Dashboard';
+import Sales from './pages/sales';
 
-// ✅ Layout component (IMPORTANT)
+// 🔥 Auth check
+const isAuthenticated = () => {
+  return !!localStorage.getItem("token");
+};
+
+// 🔥 Protected Route
+const ProtectedRoute = ({ children }) => {
+  return isAuthenticated() ? children : <Navigate to="/" />;
+};
+
+// 🔥 Public Route (Login/Signup)
+const PublicRoute = ({ children }) => {
+  return isAuthenticated() ? <Navigate to="/products" /> : children;
+};
+
 function Layout() {
-  const location = useLocation();
-
   return (
-    <>
-      {/* Show Navbar only if NOT dashboard */}
-      {location.pathname !== "/dashboard" && <Navbar />}
+    <Routes>
 
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/products/create" element={<CreateProduct />} />
-        <Route path="/products/edit/:id" element={<UpdateProduct />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Routes>
-    </>
+      {/* 🔓 Public */}
+      <Route 
+        path="/" 
+        element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        } 
+      />
+
+      <Route 
+        path="/signup" 
+        element={
+          <PublicRoute>
+            <Signup />
+          </PublicRoute>
+        } 
+      />
+
+      {/* 🔒 Protected */}
+      <Route 
+        path="/products" 
+        element={
+          <ProtectedRoute>
+            <Products />
+          </ProtectedRoute>
+        } 
+      />
+
+      <Route 
+        path="/products/create" 
+        element={
+          <ProtectedRoute>
+            <CreateProduct />
+          </ProtectedRoute>
+        } 
+      />
+
+      <Route 
+        path="/products/edit/:id" 
+        element={
+          <ProtectedRoute>
+            <UpdateProduct />
+          </ProtectedRoute>
+        } 
+      />
+
+      <Route 
+        path="/cart" 
+        element={
+          <ProtectedRoute>
+            <Cart />
+          </ProtectedRoute>
+        } 
+      />
+
+      <Route 
+        path="/dashboard" 
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        } 
+      />
+
+      <Route 
+        path="/sales" 
+        element={
+          <ProtectedRoute>
+            <Sales />
+          </ProtectedRoute>
+        } 
+      />
+
+    </Routes>
   );
 }
 
-// ✅ Main App
 function App() {
   return (
     <BrowserRouter>

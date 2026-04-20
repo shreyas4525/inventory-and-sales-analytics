@@ -1,19 +1,26 @@
-body {
-    min-height: 100vh;
-    background: #101010;
+/* ===== Layout ===== */
+.layout {
+  display: flex;
 }
+
+.main_content {
+  margin-left: 220px;
+  width: calc(100% - 220px);
+  padding: 10px;
+}
+
+/* ===== Page ===== */
 .products_page {
-  padding: 20px;
-  background: #f4f6f9;
-  min-height: 100vh;
+  margin: 10px;
   font-family: "Segoe UI", sans-serif;
 }
 
-/* Header */
+/* ===== Header ===== */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .actions button {
@@ -29,11 +36,11 @@ body {
   color: white;
   transition: 0.3s;
 }
-.new:hover{
-    transform: translateY(-2px);
+.new:hover {
+  transform: translateY(-2px);
 }
 
-/* Controls */
+/* ===== Controls ===== */
 .controls {
   display: flex;
   gap: 10px;
@@ -54,12 +61,11 @@ body {
   background: white;
 }
 
-
-/* Table */
+/* ===== Table ===== */
 .table_container {
   background: white;
   border-radius: 10px;
-  overflow: hidden;
+  overflow-x: auto; /* ✅ responsive scroll */
 }
 
 table {
@@ -81,7 +87,7 @@ tr:not(:last-child) {
   border-bottom: 1px solid #eee;
 }
 
-/* Product cell */
+/* ===== Product cell ===== */
 .product {
   display: flex;
   align-items: center;
@@ -94,7 +100,7 @@ tr:not(:last-child) {
   border-radius: 6px;
 }
 
-/* Status */
+/* ===== Status ===== */
 .status {
   padding: 5px 10px;
   border-radius: 20px;
@@ -111,56 +117,86 @@ tr:not(:last-child) {
   color: #dc2626;
 }
 
-/* Stock */
+/* ===== Stock ===== */
 .low_stock {
   color: red;
   font-weight: bold;
 }
 
-/* Buttons */
-.actions_btns{
-    display: flex;
-    justify-content: space-around;
+/* ===== Action Buttons (FIXED) ===== */
+.actions_btns {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  align-items: center;
 }
+
 .actions_btns button {
-  margin-right: 5px;
-  padding: 6px 10px;
+  width: 34px;
+  height: 34px;
+  padding: 0;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  width: 100%;
-  height: 100%;
-  max-height: 70px;
-  max-width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 13px;
   transition: all 0.2s ease;
 }
 
-.edit:hover,
-.delete:hover,
+.edit {
+  background: #b2d4ea;
+}
+.delete {
+  background: #fcbebe;
+}
+.cart {
+  background: #a1ffc4;
+}
+
+.edit:hover {
+  background: #65bbf3;
+  transform: translateY(-2px);
+}
+.delete:hover {
+  background: #f59191;
+  transform: translateY(-2px);
+}
 .cart:hover {
+  background: #6dfea2;
   transform: translateY(-2px);
 }
 
-.edit {
-  background: #b2d4ea;
-  transition: 0.3s;
+/* ===== Responsive ===== */
+
+/* Tablet */
+@media (max-width: 950px) {
+  .main_content {
+    margin-left: 0;
+    width: 100%;
+  }
 }
 
-.delete {
-  background: #fcbebe;
-  transition: 0.3s;
+/* Mobile */
+@media (max-width: 768px) {
+  .controls input,
+  .filter {
+    width: 100%;
+  }
+
+
 }
-.cart{
-    background-color: #a1ffc4;
-    transition: 0.3s;
-}
-.edit:hover {
-  background: #65bbf3;
-}
-.delete:hover{
-  background: #f59191;
-}
-.cart:hover{
-    background-color: #6dfea2;
+
+/* Small Mobile */
+@media (max-width: 600px) {
+  th, td {
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .product img {
+    width: 30px;
+    height: 30px;
+  }
 }

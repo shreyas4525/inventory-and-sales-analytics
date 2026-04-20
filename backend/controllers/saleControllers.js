@@ -66,12 +66,39 @@ export const createSale = async (req, res) => {
   }
 };
 
+export const deleteSale = async (req, res) => {
+  try {
+    const sale = await Sale.findById(req.params.id);
+
+    if (!sale) {
+      return res.status(404).json({ message: "Sale not found" });
+    }
+
+    
+    for (const item of sale.items) {
+      const product = await Product.findById(item.product);
+
+      if (product) {
+        product.stock += item.quantity;
+        await product.save();
+      }
+    }
+
+    await sale.deleteOne();
+
+    res.status(200).json({ message: "Sale deleted successfully" });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 
 // GET SALES (WITH MULTIPLE PRODUCTS)
 export const getSales = async (req, res) => {
   try {
     const sales = await Sale.find({ user: req.user.id })
-      .populate("items.product") // IMPORTANT change
+      .populate("items.product")
       .sort({ createdAt: -1 });
 
     res.status(200).json(sales);

@@ -16,10 +16,13 @@ function Sidebar() {
 
       <ul className="menu">
         <li>
-          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/products">Products</Link>
         </li>
         <li>
-          <Link to="/products">Products</Link>
+          <Link to="/sales">Sales</Link>
+        </li>
+        <li>
+          <Link to="/dashboard">Dashboard</Link>
         </li>
         <li>
           <Link to="/cart">Cart</Link>

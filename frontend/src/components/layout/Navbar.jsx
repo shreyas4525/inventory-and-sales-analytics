@@ -13,7 +13,7 @@ function Navbar() {
   return (
     <nav className="navbar_container">
       <ul>
-        <li><Link to="/Products">inventory</Link></li>
+        <li><Link to="/products">inventory</Link></li>
         <li><Link to="/products">Products</Link></li>
         <li><Link to="/dashboard">dashboard</Link></li>
         <li><Link to="/cart">cart</Link></li>
