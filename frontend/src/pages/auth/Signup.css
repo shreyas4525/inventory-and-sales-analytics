@@ -32,7 +32,7 @@
 }
 
 /* Heading */
-.signup_left h1 {
+.form_container h1 {
   font-size: 36px;
   font-weight: 700;
   margin-bottom: 10px;
@@ -165,6 +165,12 @@ form small {
   position: absolute;
   inset: 0;
   background: rgba(0,0,0,0.15);
+}
+
+.otp_info {
+  font-size: 13.5px;
+  color: #888;
+  text-align: center;
 }
 @keyframes fadeIn {
   from {
