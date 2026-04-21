@@ -1,4 +1,4 @@
-const otpGenerator = require("otp-generator");
+import otpGenerator from "otp-generator";
 
 const generateOTP = () => {
   return otpGenerator.generate(6, {
@@ -8,4 +8,4 @@ const generateOTP = () => {
   });
 };
 
-module.exports = generateOTP;
+export default generateOTP;
