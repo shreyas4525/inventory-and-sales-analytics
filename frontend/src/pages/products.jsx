@@ -83,7 +83,10 @@ const Products = () => {
             </div>
 
             <div className="actions">
-              <button className="new" onClick={() => navigate("/products/create")}>
+              <button
+                className="new"
+                onClick={() => navigate("/products/create")}
+              >
                 + New Product
               </button>
             </div>
@@ -108,7 +111,11 @@ const Products = () => {
                 {filteredProducts.map((item) => (
                   <tr key={item._id}>
                     <td className="product">
-                      <img src="/productcard.jpg" alt="" />
+                      <img
+                        src={item.image || "/noproduct.jpg"}
+                        alt={item.name}
+                        onError={(e) => (e.target.src = "/noproduct.jpg")}
+                      />
                       <span>{item.name}</span>
                     </td>
 
@@ -122,7 +129,9 @@ const Products = () => {
 
                     <td>
                       <span
-                        className={`status ${item.stock === 0 ? "out" : "active"}`}
+                        className={`status ${
+                          item.stock === 0 ? "out" : "active"
+                        }`}
                       >
                         {item.stock === 0 ? "Out of Stock" : "Active"}
                       </span>
@@ -133,16 +142,25 @@ const Products = () => {
                         className="edit"
                         onClick={() => navigate(`/products/edit/${item._id}`)}
                       >
-                        <i className="fa-solid fa-pen-to-square" style={{ color: " rgb(41, 41, 41)" }}></i>
+                        <i
+                          className="fa-solid fa-pen-to-square"
+                          style={{ color: " rgb(41, 41, 41)" }}
+                        ></i>
                       </button>
                       <button
                         className="delete"
                         onClick={() => handleDelete(item._id)}
                       >
-                        <i className="fa-solid fa-trash-can" style={{ color: "rgb(79, 79, 79)" }}></i>
+                        <i
+                          className="fa-solid fa-trash-can"
+                          style={{ color: "rgb(79, 79, 79)" }}
+                        ></i>
                       </button>
                       <button className="cart" onClick={() => addToCart(item)}>
-                        <i className="fa-solid fa-cart-shopping" style={{ color: " rgb(41, 41, 41)" }}></i>
+                        <i
+                          className="fa-solid fa-cart-shopping"
+                          style={{ color: " rgb(41, 41, 41)" }}
+                        ></i>
                       </button>
                     </td>
                   </tr>
@@ -152,7 +170,8 @@ const Products = () => {
           </div>
         </div>
       </div>
-      /</div>
+      /
+    </div>
   );
 };
 

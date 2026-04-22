@@ -67,57 +67,61 @@ function Cart() {
 
   return (
     <>
-    <Navbar/>
-    <div className="cart_page">
-      <h2>Cart</h2>
-    <div className="cart_wrapper">
-      <div className="cart_table">
-        <div className="cart_header">
-          <span>Product</span>
-          <span>Price</span>
-          <span>Quantity</span>
-          <span>Total</span>
-        </div>
-
-        {cart.map((item) => (
-          <div className="cart_row" key={item._id}>
-            {/* Product */}
-            <div className="product_info">
-              <button onClick={() => removeItem(item._id)}>
-                {" "}
-                <i
-                  className="fa-solid fa-trash-can"
-                  style={{ color: "rgb(79, 79, 79)" }}
-                ></i>
-              </button>
-              <img src="/productcard.jpg" alt="" />
-              <span>{item.name}</span>
+      <Navbar />
+      <div className="cart_page">
+        <h2>Cart</h2>
+        <div className="cart_wrapper">
+          <div className="cart_table">
+            <div className="cart_header">
+              <span>Product</span>
+              <span>Price</span>
+              <span>Quantity</span>
+              <span>Total</span>
             </div>
 
-            {/* Price */}
-            <div>₹{item.sellingPrice}</div>
+            {cart.map((item) => (
+              <div className="cart_row" key={item._id}>
+                {/* Product */}
+                <div className="product_info">
+                  <button onClick={() => removeItem(item._id)}>
+                    {" "}
+                    <i
+                      className="fa-solid fa-trash-can"
+                      style={{ color: "rgb(79, 79, 79)" }}
+                    ></i>
+                  </button>
+                  <img
+                    src={item.image || "/noproduct.jpg"}
+                    alt={item.name}
+                    onError={(e) => (e.target.src = "/noproduct.jpg")}
+                  />
+                  <span>{item.name}</span>
+                </div>
 
-            {/* Quantity */}
-            <div className="qty">
-              <button onClick={() => decreaseQty(item._id)}>-</button>
-              <span>{item.quantity}</span>
-              <button onClick={() => increaseQty(item._id)}>+</button>
-            </div>
+                {/* Price */}
+                <div>₹{item.sellingPrice}</div>
 
-            {/* Total */}
-            <div>₹{item.sellingPrice * item.quantity}</div>
+                {/* Quantity */}
+                <div className="qty">
+                  <button onClick={() => decreaseQty(item._id)}>-</button>
+                  <span>{item.quantity}</span>
+                  <button onClick={() => increaseQty(item._id)}>+</button>
+                </div>
+
+                {/* Total */}
+                <div>₹{item.sellingPrice * item.quantity}</div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
+        {/* Bottom Section */}
+        <div className="cart_footer">
+          <h3>Total: ₹{total}</h3>
+          <button onClick={handleCheckout} className="checkout">
+            Checkout
+          </button>
+        </div>
       </div>
-</div>
-      {/* Bottom Section */}
-      <div className="cart_footer">
-        <h3>Total: ₹{total}</h3>
-        <button onClick={handleCheckout} className="checkout">
-          Checkout
-        </button>
-      </div>
-    </div>
     </>
   );
 }

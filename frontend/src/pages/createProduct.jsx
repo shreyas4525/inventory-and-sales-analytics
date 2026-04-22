@@ -23,28 +23,38 @@ function CreateProduct() {
 
   // Handle file select
   const handleFile = (file) => {
+    if (!file) return;
     setImage(file);
     setPreview(URL.createObjectURL(file));
   };
 
-  // Drag drop
+  // Drag & Drop
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    if (file) handleFile(file);
+    handleFile(file);
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    await API.post("/products", form); // ✅ send JSON
+    try {
+      const data = new FormData();
 
-    navigate("/products");
-  } catch (err) {
-    console.log(err);
-  }
-};
+      data.append("name", form.name);
+      data.append("category", form.category);
+      data.append("costPrice", form.costPrice);
+      data.append("sellingPrice", form.sellingPrice);
+      data.append("stock", form.stock);
+      data.append("image", image); // 🔥 important
+
+      await API.post("/products", data);
+
+      navigate("/products");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="create_product_page">
@@ -52,8 +62,9 @@ function CreateProduct() {
         <h2>Add Product</h2>
 
         <form onSubmit={handleSubmit}>
-          <div 
+          <div
             className="upload_box"
+            onClick={() => document.getElementById("fileInput").click()}
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleDrop}
           >
@@ -64,16 +75,56 @@ function CreateProduct() {
             )}
 
             <input
+              id="fileInput"
               type="file"
               accept="image/*"
-              //onChange={(e) => handleFile(e.target.files[0])}
+              onChange={(e) => handleFile(e.target.files[0])}
+              hidden
             />
           </div>
-          <input name="name" placeholder="Product Name" value={form.name} onChange={handleChange} required />
-          <input name="category" placeholder="Category" value={form.category} onChange={handleChange} required />
-          <input name="costPrice" type="number" placeholder="Cost Price" value={form.costPrice} onChange={handleChange} required />
-          <input name="sellingPrice" type="number" placeholder="Selling Price" value={form.sellingPrice} onChange={handleChange} required />
-          <input name="stock" type="number" placeholder="Stock" value={form.stock} onChange={handleChange} required />
+
+          <input
+            name="name"
+            placeholder="Product Name"
+            value={form.name}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            name="category"
+            placeholder="Category"
+            value={form.category}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            name="costPrice"
+            type="number"
+            placeholder="Cost Price"
+            value={form.costPrice}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            name="sellingPrice"
+            type="number"
+            placeholder="Selling Price"
+            value={form.sellingPrice}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            name="stock"
+            type="number"
+            placeholder="Stock"
+            value={form.stock}
+            onChange={handleChange}
+            required
+          />
 
           <button type="submit">Create Product</button>
         </form>
@@ -83,3 +134,4 @@ function CreateProduct() {
 }
 
 export default CreateProduct;
+

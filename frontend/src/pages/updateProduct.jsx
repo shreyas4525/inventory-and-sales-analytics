@@ -2,11 +2,10 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import API from "../api/axios";
 import "./createProduct.css";
-import "./createProduct.css";
 
 function UpdateProduct() {
   const navigate = useNavigate();
-  const { id } = useParams(); 
+  const { id } = useParams();
 
   const [form, setForm] = useState({
     name: "",
@@ -26,6 +25,7 @@ function UpdateProduct() {
 
   // Handle file select
   const handleFile = (file) => {
+    if (!file) return;
     setImage(file);
     setPreview(URL.createObjectURL(file));
   };
@@ -34,10 +34,10 @@ function UpdateProduct() {
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    if (file) handleFile(file);
+    handleFile(file);
   };
 
-  // Fetch product for update
+  // Fetch product
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -54,7 +54,6 @@ function UpdateProduct() {
         if (res.data.image) {
           setPreview(res.data.image);
         }
-
       } catch (err) {
         console.log(err);
       }
@@ -63,16 +62,25 @@ function UpdateProduct() {
     if (id) fetchProduct();
   }, [id]);
 
-  // Submit (Create or Update)
+  // Submit update
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      if (id) {
-        await API.put(`/products/${id}`, form); // UPDATE
-      } else {
-        await API.post("/products", form); // CREATE
+      const data = new FormData();
+
+      data.append("name", form.name);
+      data.append("category", form.category);
+      data.append("costPrice", form.costPrice);
+      data.append("sellingPrice", form.sellingPrice);
+      data.append("stock", form.stock);
+
+      // 🔥 only send image if user selected new one
+      if (image) {
+        data.append("image", image);
       }
+
+      await API.put(`/products/${id}`, data);
 
       navigate("/products");
     } catch (err) {
@@ -83,12 +91,13 @@ function UpdateProduct() {
   return (
     <div className="create_product_page">
       <div className="form_container">
-        <h2>{id ? "Update Product" : "Add Product"}</h2>
+        <h2>Update Product</h2>
 
         <form onSubmit={handleSubmit}>
           {/* Image Upload */}
           <div
             className="upload_box"
+            onClick={() => document.getElementById("fileInput").click()}
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleDrop}
           >
@@ -99,9 +108,11 @@ function UpdateProduct() {
             )}
 
             <input
+              id="fileInput"
               type="file"
               accept="image/*"
               onChange={(e) => handleFile(e.target.files[0])}
+              hidden
             />
           </div>
 
@@ -149,9 +160,7 @@ function UpdateProduct() {
             required
           />
 
-          <button type="submit">
-            {id ? "Update Product" : "Create Product"}
-          </button>
+          <button type="submit">Update Product</button>
         </form>
       </div>
     </div>
@@ -159,3 +168,4 @@ function UpdateProduct() {
 }
 
 export default UpdateProduct;
+
