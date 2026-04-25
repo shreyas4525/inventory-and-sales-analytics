@@ -103,7 +103,8 @@ const Products = () => {
                   <th>Selling</th>
                   <th>Stock</th>
                   <th>Status</th>
-                  <th></th>
+                  <th>Barcode</th>
+                  <th>Buttons</th>
                 </tr>
               </thead>
 
@@ -135,6 +136,14 @@ const Products = () => {
                       >
                         {item.stock === 0 ? "Out of Stock" : "Active"}
                       </span>
+                    </td>
+                    <td className="barcode_cell">
+                      <div className="barcode_box">
+                        <img
+                          src={`https://barcode.tec-it.com/barcode.ashx?data=${item.barcode}&code=Code128`}
+                          alt="barcode"
+                        />
+                      </div>
                     </td>
 
                     <td className="actions_btns">
@@ -170,7 +179,6 @@ const Products = () => {
           </div>
         </div>
       </div>
-      /
     </div>
   );
 };

@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams,Link } from "react-router-dom";
 import API from "../api/axios";
 import "./createProduct.css";
+import Navbar from "../components/layout/Navbar";
+
 
 function UpdateProduct() {
   const navigate = useNavigate();
@@ -89,6 +91,7 @@ function UpdateProduct() {
   };
 
   return (
+    <>
     <div className="create_product_page">
       <div className="form_container">
         <h2>Update Product</h2>
@@ -160,10 +163,14 @@ function UpdateProduct() {
             required
           />
 
-          <button type="submit">Update Product</button>
+          <div className="btn_container">
+            <Link to="/">Cancel</Link>
+            <button type="submit">Update Product</button>
+          </div>
         </form>
       </div>
     </div>
+    </>
   );
 }
 

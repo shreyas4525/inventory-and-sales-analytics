@@ -1,214 +1,150 @@
+/* PAGE BACKGROUND */
 .create_product_page {
   min-height: 100vh;
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
   display: flex;
   justify-content: center;
   align-items: center;
-
-  background: #f4f6f9; /* clean light background */
+  padding: 20px;
 }
 
-/* Card */
+/* MAIN FORM CONTAINER */
 .form_container {
-  background: white;
-  padding: 35px;
-  border-radius: 16px;
   width: 100%;
-  max-width: 420px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  max-width: 450px;
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 18px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  animation: fadeIn 0.4s ease;
 }
 
-/* Heading */
+/* TITLE */
 .form_container h2 {
   text-align: center;
-  margin-bottom: 5px;
-}
-
-.subtitle {
-  text-align: center;
-  font-size: 14px;
-  color: #666;
   margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 24px;
+
+  background: #111827;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
 }
 
-/* Inputs */
-.form_container input {
-  width: 100%;
-  margin-bottom: 15px;
-  padding: 12px;
-
-  border-radius: 10px;
-  border: 1px solid #ddd;
-
-  font-size: 14px;
-  outline: none;
-  transition: 0.2s;
-}
-
-.form_container input:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
-}
-
-/* Row (cost + selling) */
-.row {
-  display: flex;
-  gap: 10px;
-}
-
-/* Button */
-.form_container button {
-  width: 100%;
-  padding: 12px;
-
-  border: none;
-  border-radius: 10px;
-
-  background: #111; /* black button */
-  color: white;
-
-  font-weight: 500;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.form_container button:hover {
-  background: #333;
-}
-
-/* Disabled */
-.form_container button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-.create_product_page {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background: #f4f6f9; /* clean light background */
-}
-
-/* Card */
-.form_container {
-  background: white;
-  padding: 35px;
-  border-radius: 16px;
-  width: 100%;
-  max-width: 420px;
-
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-}
-
-/* Heading */
-.form_container h2 {
-  text-align: center;
-  margin-bottom: 5px;
-}
-
-.subtitle {
-  text-align: center;
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 20px;
-}
-
-/* Inputs */
-.form_container input {
-  width: 100%;
-  margin-bottom: 15px;
-  padding: 12px;
-
-  border-radius: 10px;
-  border: 1px solid #ddd;
-
-  font-size: 14px;
-  outline: none;
-  transition: 0.2s;
-}
-
-.form_container input:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
-}
-
-
-/* Button */
-.form_container button {
-  width: 100%;
-  padding: 12px;
-
-  border: none;
-  border-radius: 10px;
-
-  background: #111; /* black button */
-  color: white;
-
-  font-weight: 500;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.form_container button:hover {
-  background: #333;
-}
-
-/* Disabled */
-.form_container button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
+/* UPLOAD BOX */
 .upload_box {
-  position: relative;
-
-  width: 100%;
-  height: 180px; /* 🔥 square-like box */
-
-  border: 2px dashed #bbb;
-  border-radius: 12px;
-
+  height: 180px;
+  border: 2px dashed #11182762;
+  border-radius: 14px;
   display: flex;
-  justify-content: center;
   align-items: center;
-
+  justify-content: center;
+  cursor: pointer;
+  background: #f9fafb;
+  transition: all 0.25s ease;
+  margin-bottom: 20px;
   text-align: center;
-  cursor: pointer;
-
-  background: #fafafa;
-  transition: 0.3s;
+  overflow: hidden;
 }
 
-/* Hover effect */
 .upload_box:hover {
-  border-color: #333;
-  background: #f0f0f0;
+  border-color: #111827;
+  background: #eef2ff;
 }
 
-/* Text inside */
 .upload_box p {
+  color: #6b7280;
   font-size: 14px;
-  color: #666;
-  pointer-events: none;
 }
 
-/* Hide input */
-.upload_box input {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-}
-
-/* Image preview */
 .upload_box img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
+}
+
+.form_container input,
+.form_container .form-control {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 12px;
   border-radius: 10px;
+
+  border: 1px solid #374151;
+  background: #f9fafb;
+
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+/* FOCUS EFFECT */
+.form_container input:focus,
+.form_container .form-control:focus {
+  border-color: #111827; /* match theme */
+  box-shadow: 0 0 0 2px rgba(17, 24, 39, 0.2);
+  background: #ffffff;
+}
+
+/* BUTTON */
+.btn_container button {
+  width: 80%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+
+  background: #111827; /* ✅ solid dark */
+  color: white;
+
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin: 5px;
+
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+.btn_container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn_container a{
+  text-align: center;
+  font-size: 16px;
+
+   width: 80%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+
+  background: #111827; /* ✅ solid dark */
+  color: white;
+
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin: 5px;
+  
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* BUTTON HOVER */
+.form_container button:hover {
+  transform: translateY(-1px);
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

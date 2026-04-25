@@ -55,10 +55,10 @@ function Login() {
       <div className="signup_page">
         {/* LEFT SIDE */}
         <div className="signup_left">
-          <h1>Welcome Back</h1>
-          <p className="subtitle">Login to continue 🚀</p>
 
           <div className="form_container">
+            <h1>Welcome Back</h1>
+          <p className="subtitle">Login to continue 🚀</p>
             <form onSubmit={handleSubmit}>
               <input
                 type="email"

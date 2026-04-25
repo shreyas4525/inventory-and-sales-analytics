@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import API from "../../api/axios";
-import "./signup.css";
+import "./Signup.css";
 import AuthNavbar from "../../components/layout/authNavbar";
 
 function Signup() {
@@ -63,10 +63,6 @@ function Signup() {
             <div className="form_container">
 
               <h1>Create an account</h1>
-
-              <p className="subtitle">
-                Start managing your inventory smarter 🚀
-              </p>
 
               {/* FEATURES (only step 1) */}
               {step === 1 && (

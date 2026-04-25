@@ -99,3 +99,64 @@ body{
   border-radius: 6px;
   cursor: pointer;
 }
+/* SCAN BUTTON */
+.scanner_top {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.scan_btn {
+  background: #111827;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* MODAL BACKDROP */
+.scanner_modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 1000;
+}
+
+/* SCANNER BOX */
+.scanner_box {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 350px;
+  max-width: 90%;
+}
+
+/* HEADER */
+.scanner_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.scanner_header button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* CAMERA AREA */
+#reader {
+  width: 100%;
+}

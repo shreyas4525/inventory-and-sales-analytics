@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import API from "../api/axios";
 import "./createProduct.css";
 
@@ -125,8 +125,10 @@ function CreateProduct() {
             onChange={handleChange}
             required
           />
-
-          <button type="submit">Create Product</button>
+          <div className="btn_container">
+            <Link to="/">Cancel</Link>
+            <button type="submit">Create Product</button>
+          </div>
         </form>
       </div>
     </div>
