@@ -96,3 +96,69 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+//Forgot passoword
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const existingUser = await User.findOne({ email });
+
+
+    if (!existingUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    await Otp.deleteMany({ email });
+
+    const otp = generateOTP();
+
+    await Otp.create({
+      email,
+      otp,
+      expiresAt: Date.now() + 5 * 60 * 1000,
+    });
+
+    await sendEmail(email, otp);
+
+    return res.json({ message: "OTP sent to email" });
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: err.message });
+  }
+};
+//reset password
+export const resetPassword = async (req, res) => {
+  try {
+    const { email, otp, password } = req.body;
+
+    const record = await Otp.findOne({ email, otp });
+
+    if (!record) {
+      return res.status(400).json({ message: "Invalid OTP" });
+    }
+
+    if (record.expiresAt < Date.now()) {
+      return res.status(400).json({ message: "OTP expired" });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    await Otp.deleteMany({ email });
+
+    return res.json({ message: "Password reset successful" });
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: err.message });
+  }
+};

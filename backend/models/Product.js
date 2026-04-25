@@ -27,12 +27,15 @@ const productSchema = new mongoose.Schema(
       default: 0,
     },
     image: {
-  type: String,
-  required: true,
+      type: String,
+      required: true,
     },
 
     category: String,
-
+    barcode: {
+      type: String,
+      unique: true,
+    },
     supplier: {
       name: {
         type: String,

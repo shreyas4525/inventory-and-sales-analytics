@@ -6,7 +6,7 @@ export const createProduct = async (req, res) => {
   try {
     const { name, category, costPrice, sellingPrice, stock } = req.body;
     console.log(req.body);
-    // ✅ validate fields
+
    const parsedCost = Number(costPrice);
 const parsedSelling = Number(sellingPrice);
 const parsedStock = Number(stock);
@@ -20,21 +20,16 @@ if (
 ) {
   return res.status(400).json({ message: "Invalid input" });
 }
-
-    // ✅ check image
     if (!req.file) {
       return res.status(400).json({ message: "Image is required" });
     }
 
-    // 🔥 convert buffer → base64
     const fileStr = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
-
-    // 🔥 upload to Cloudinary
     const result = await cloudinary.uploader.upload(fileStr, {
       folder: "products",
     });
+    const barcode = Date.now().toString();
 
-    // ✅ create product
     const product = await Product.create({
       name,
       category,
@@ -42,7 +37,7 @@ if (
       sellingPrice,
       stock,
       image: result.secure_url,   // ⭐ save image URL
-
+      barcode,
       // 🔥 safe user handling
       user: req.user?.id || null,
     });
@@ -103,7 +98,7 @@ export const updateProduct = async (req, res) => {
 
       product.image = result.secure_url;
     }
-
+    
     // ✅ update fields
     if (name) product.name = name;
     if (category) product.category = category;
@@ -146,6 +141,23 @@ export const deleteProduct = async (req, res) => {
     await product.deleteOne();
 
     res.status(200).json({ message: "Product deleted successfully" });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+export const getProductByBarcode = async (req, res) => {
+  try {
+    const product = await Product.findOne({
+      barcode: req.params.code,
+      user: req.user.id
+    });
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.json(product);
 
   } catch (error) {
     res.status(500).json({ message: error.message });
