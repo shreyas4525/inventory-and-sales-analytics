@@ -64,7 +64,6 @@ function Signup() {
 
               <h1>Create an account</h1>
 
-              {/* FEATURES (only step 1) */}
               {step === 1 && (
                 <ul className="features">
                   <li>✔ Track products easily</li>

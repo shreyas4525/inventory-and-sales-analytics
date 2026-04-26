@@ -52,6 +52,10 @@
   max-width: 360px;
   height: 100%;
   margin: 50px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Form */
@@ -114,7 +118,7 @@ form small {
 .google_btn {
   width: 100%;
   padding: 11px;
-  border: 1px solid #ddd;
+  border: 1px solid #1111115f;
   background: white;
   border-radius: 25px;
   display: flex;
@@ -127,6 +131,8 @@ form small {
 
 .google_btn:hover {
   background: #f5f5f5;
+    border: 1px solid #111111;
+
 }
 
 .google_btn img {
@@ -204,6 +210,39 @@ form small {
   max-height: 80px;
 }
 /* Forgot password */ 
+
+.forget_container {
+  position: relative;
+  padding: 30px 20px;
+}
+
+.signup_left {
+  position: relative;
+}
+
+.back_btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+
+  background: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.back_btn:hover {
+  transform: scale(1.05);
+}
 .forgot_row { 
   display: flex;
   justify-content: flex-end;
@@ -213,6 +252,20 @@ form small {
   font-size: 12px;
   color: #1f8ea3;
   text-decoration: none;
+}
+.forget_btn{
+  width: 100%;
+  background: #111827;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+.forget_container input{
+  margin-top: 30px;
 }
 
 /* Responsive */

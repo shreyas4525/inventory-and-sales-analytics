@@ -16,6 +16,9 @@ function Sidebar() {
 
       <ul className="menu">
         <li>
+          <Link to="/"><img className="logo "src="logo.png" alt="" /></Link>
+        </li>
+        <li>
           <Link to="/products">Products</Link>
         </li>
         <li>

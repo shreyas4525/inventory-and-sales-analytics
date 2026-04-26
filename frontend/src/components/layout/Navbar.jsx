@@ -13,7 +13,7 @@ function Navbar() {
   return (
     <nav className="navbar_container">
       <ul>
-        <li><Link to="/products">inventory</Link></li>
+        <li><Link to="/products"><img className="logo "src="logo.png" alt="" /></Link></li>
         <li><Link to="/products">Products</Link></li>
         <li><Link to="/dashboard">dashboard</Link></li>
         <li><Link to="/cart">cart</Link></li>

@@ -5,7 +5,7 @@ function AuthNavbar() {
   return (
     <nav className="navbar_container">
       <ul>
-        <li className="inv">inventory</li>
+        <li className="inv"><img className="logo" src="logo.png" alt="inventrack logo" /></li>
       </ul>
     </nav>
   );

@@ -95,39 +95,43 @@ function Cart() {
 
         {/* ✅ SCAN BUTTON */}
         <div className="scanner_top">
-          <button
-            onClick={() => setShowScanner(true)}
-            className="scan_btn"
-          >
+          <button onClick={() => setShowScanner(true)} className="scan_btn">
             📷 Scan Barcode
           </button>
         </div>
 
-        {/* ✅ SCANNER MODAL */}
-        {showScanner && (
-          <div className="scanner_modal">
-            <div className="scanner_box">
+        {/* SCANNER MODAL */}
+       {showScanner && (
+  <div className="scanner_modal">
+    <div className="scanner_box">
 
-              <div className="scanner_header">
-                <h3>Scan Product</h3>
-                <button onClick={() => setShowScanner(false)}>✖</button>
-              </div>
+      <div className="scanner_header">
+        <h3>Scan Product</h3>
+        <button
+          onClick={() => {
+            setShowScanner(false);
+          }}
+        >
+          ✖
+        </button>
+      </div>
 
-              <BarcodeScanner
-                onScan={(product) => {
-                  handleScan(product);
-                  setShowScanner(false); // auto close
-                }}
-              />
+      <BarcodeScanner
+        onScan={(product) => {
+          handleScan(product);
 
-            </div>
-          </div>
-        )}
+          // small delay helps prevent re-init glitch
+          setTimeout(() => setShowScanner(false), 100);
+        }}
+      />
+
+    </div>
+  </div>
+)}
 
         {/* CART */}
         <div className="cart_wrapper">
           <div className="cart_table">
-
             <div className="cart_header">
               <span>Product</span>
               <span>Price</span>
@@ -142,7 +146,6 @@ function Cart() {
             ) : (
               cart.map((item) => (
                 <div className="cart_row" key={item._id}>
-
                   {/* Product */}
                   <div className="product_info">
                     <button onClick={() => removeItem(item._id)}>
@@ -152,9 +155,7 @@ function Cart() {
                     <img
                       src={item.image || "/noproduct.jpg"}
                       alt={item.name}
-                      onError={(e) =>
-                        (e.target.src = "/noproduct.jpg")
-                      }
+                      onError={(e) => (e.target.src = "/noproduct.jpg")}
                     />
 
                     <span>{item.name}</span>
@@ -165,20 +166,13 @@ function Cart() {
 
                   {/* Quantity */}
                   <div className="qty">
-                    <button onClick={() => decreaseQty(item._id)}>
-                      -
-                    </button>
+                    <button onClick={() => decreaseQty(item._id)}>-</button>
                     <span>{item.quantity}</span>
-                    <button onClick={() => increaseQty(item._id)}>
-                      +
-                    </button>
+                    <button onClick={() => increaseQty(item._id)}>+</button>
                   </div>
 
                   {/* Total */}
-                  <div>
-                    ₹{item.sellingPrice * item.quantity}
-                  </div>
-
+                  <div>₹{item.sellingPrice * item.quantity}</div>
                 </div>
               ))
             )}
