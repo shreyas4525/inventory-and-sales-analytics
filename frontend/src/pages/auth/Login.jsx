@@ -4,6 +4,7 @@ import "./Signup.css";
 import API from "../../api/axios";
 import AuthNavbar from "../../components/layout/authNavbar";
 
+
 function Login() {
   const navigate = useNavigate();
 
@@ -37,6 +38,7 @@ function Login() {
       alert(error.response?.data?.message || "Login failed");
     }
   };
+  
 
   return (
     <>
@@ -44,10 +46,16 @@ function Login() {
 
       <div className="signup_wrapper">
         <div className="signup_page">
-          {/* LEFT */}
-          {/* LEFT */}
           <div className="signup_left">
             {/* BACK BUTTON (ONLY FOR FORGOT MODE) */}
+            
+              <div className="bubbles">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            
             {forgotMode && (
               <button
                 className="back_btn"
@@ -100,11 +108,6 @@ function Login() {
 
                   <button className="primary_btn" type="submit">
                     Login
-                  </button>
-
-                  <button className="google_btn">
-                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" />
-                    Continue with Google
                   </button>
 
                   <p className="login_text">
@@ -187,7 +190,7 @@ function Login() {
                           try {
                             await API.post("/auth/reset-password", {
                               email: forgotEmail,
-                              otp:otp,
+                              otp: otp,
                               password: newPassword,
                             });
 
