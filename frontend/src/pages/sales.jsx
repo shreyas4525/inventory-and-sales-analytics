@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import API from "../api/axios";
 import Sidebar from "../components/layout/Sidebar";
-import "./Sales.css";
+import "./sales.css";
 
 const Sales = () => {
   const [sales, setSales] = useState([]);
