@@ -27,7 +27,7 @@ setForm({ ...form, [e.target.name]: e.target.value });
 const handleSendOTP = async (e) => {
 e.preventDefault();
 try {
-await API.post("/auth/signup", {
+await API.post("api/auth/signup", {
 email: form.email,
 password: form.password
 });
@@ -40,7 +40,7 @@ alert(err.response?.data?.message || "Error sending OTP");
 const handleVerifyOTP = async (e) => {
 e.preventDefault();
 try {
-await API.post("/auth/verify-signup", form);
+await API.post("api/auth/verify-signup", form);
 alert("Signup successful");
 window.location.href = "/";
 } catch (err) {

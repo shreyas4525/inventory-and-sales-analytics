@@ -29,7 +29,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res = await API.post("/auth/login", form);
+      const res = await API.post("api/auth/login", form);
 
       localStorage.setItem("token", res.data.token);
       navigate("/products");
@@ -136,7 +136,7 @@ function Login() {
                       <button
                         className="forget_btn"
                         onClick={async () => {
-                          await API.post("/auth/forgot-password", {
+                          await API.post("api/auth/forgot-password", {
                             email: forgotEmail,
                           });
 
@@ -188,7 +188,7 @@ function Login() {
                         className="forget_btn"
                         onClick={async () => {
                           try {
-                            await API.post("/auth/reset-password", {
+                            await API.post("api/auth/reset-password", {
                               email: forgotEmail,
                               otp: otp,
                               password: newPassword,
