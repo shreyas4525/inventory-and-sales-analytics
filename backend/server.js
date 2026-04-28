@@ -16,7 +16,10 @@ connectDB();
 
 const app=express();
 
-app.use(cors());
+app.use(cors({
+  origin: ["inventrack-nvqofregx-shreyas4525s-projects.vercel.app"],
+  credentials: true
+}));
 app.use(express.json());
 
 console.log("API KEY:", process.env.CLOUDINARY_API_KEY);
