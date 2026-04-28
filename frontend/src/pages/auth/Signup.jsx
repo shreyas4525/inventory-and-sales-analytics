@@ -67,11 +67,10 @@ return (
 
         <div className="form_container">
 
-          <h1>Create an account</h1>
-          <p className="subtitle">Create your account to get started 🚀</p>
-
           {step === 1 && (
             <form onSubmit={handleSendOTP}>
+              <h1>Create an account</h1>
+          <p className="subtitle">Create your account to get started 🚀</p>
               <input
                 type="email"
                 name="email"
@@ -93,6 +92,9 @@ return (
               <button type="submit" className="primary_btn">
                 Send OTP
               </button>
+              <p className="login_text">
+            Already have an account? <Link to="/">Log in</Link>
+          </p>
             </form>
           )}
 
@@ -115,10 +117,6 @@ return (
               </button>
             </form>
           )}
-
-          <p className="login_text">
-            Already have an account? <Link to="/">Log in</Link>
-          </p>
 
         </div>
       </div>
