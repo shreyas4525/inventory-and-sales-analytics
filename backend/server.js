@@ -17,7 +17,7 @@ connectDB();
 const app=express();
 
 app.use(cors({
-  origin: ["inventrack-nvqofregx-shreyas4525s-projects.vercel.app"],
+  origin: ["https://inventrack-silk.vercel.app"],
   credentials: true
 }));
 app.use(express.json());
