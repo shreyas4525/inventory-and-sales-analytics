@@ -58,14 +58,14 @@ function Dashboard() {
   (viewType === "weekly" ? weeklyData : yearlyData) || [];
 
   const fetchSummary = async () => {
-    const res = await axios.get("http://localhost:5000/api/analytics/summary", {
+    const res = await axios.get("/analytics/summary", {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     });
     setSummary(res.data);
   };
 
   const fetchYearly = async () => {
-    const res = await axios.get("http://localhost:5000/api/analytics/yearly-sales", {
+    const res = await axios.get("/analytics/yearly-sales", {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     });
 
@@ -78,7 +78,7 @@ function Dashboard() {
 
   const fetchMonthly = async (year) => {
     const res = await axios.get(
-      `http://localhost:5000/api/analytics/monthly-sales?year=${year}`,
+      `/analytics/monthly-sales?year=${year}`,
       {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       }
@@ -94,7 +94,7 @@ function Dashboard() {
   };
 
   const fetchWeekly = async () => {
-    const res = await axios.get("http://localhost:5000/api/analytics/weekly-sales", {
+    const res = await axios.get("/api/analytics/weekly-sales", {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     });
 
@@ -102,7 +102,7 @@ function Dashboard() {
   };
 
   const fetchCategory = async () => {
-    const res = await axios.get("http://localhost:5000/api/analytics/profit-category", {
+    const res = await axios.get("/analytics/profit-category", {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     });
 
@@ -110,7 +110,7 @@ function Dashboard() {
   };
 
   const fetchLowStock = async () => {
-    const res = await axios.get("http://localhost:5000/api/analytics/low-stock", {
+    const res = await axios.get("/analytics/low-stock", {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     });
 
@@ -118,7 +118,7 @@ function Dashboard() {
   };
 
   const fetchTopProducts = async () => {
-    const res = await axios.get("http://localhost:5000/api/analytics/top-products", {
+    const res = await axios.get("/analytics/top-products", {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     });
 
