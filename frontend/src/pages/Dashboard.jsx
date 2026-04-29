@@ -1,6 +1,6 @@
 import "./Dashboard.css";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import API from "../api/axios";
 import {
   LineChart, Line, XAxis, YAxis, Tooltip,
   BarChart, Bar, Legend, PieChart, Pie,
@@ -11,7 +11,6 @@ import Sidebar from "../components/layout/Sidebar";
 const COLORS = ["#3b82f6", "#22c55e", "#f59e0b", "#ef4444", "#8b5cf6"];
 
 function Dashboard() {
-
   const [summary, setSummary] = useState({});
   const [yearlyData, setYearlyData] = useState([]);
   const [weeklyData, setWeeklyData] = useState([]);
@@ -26,7 +25,6 @@ function Dashboard() {
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-  // ================= USE EFFECT =================
   useEffect(() => {
     fetchSummary();
     fetchYearly();
@@ -35,38 +33,35 @@ function Dashboard() {
     fetchLowStock();
     fetchTopProducts();
 
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 500);
-    };
-
+    const handleResize = () => setIsMobile(window.innerWidth < 500);
     window.addEventListener("resize", handleResize);
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
-    if (selectedYear) {
-      fetchMonthly(selectedYear);
-    }
+    if (selectedYear) fetchMonthly(selectedYear);
   }, [selectedYear]);
+
+  const chartData =
+    (viewType === "weekly" ? weeklyData : yearlyData) || [];
 
   // ================= API CALLS =================
 
-  const chartData =
-  (viewType === "weekly" ? weeklyData : yearlyData) || [];
-
   const fetchSummary = async () => {
-    const res = await axios.get("/analytics/summary", {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    const res = await API.get("/analytics/summary", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
     });
     setSummary(res.data);
   };
 
   const fetchYearly = async () => {
-    const res = await axios.get("/analytics/yearly-sales", {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    const res = await API.get("/analytics/yearly-sales", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
     });
 
     setYearlyData(res.data || []);
@@ -77,12 +72,11 @@ function Dashboard() {
   };
 
   const fetchMonthly = async (year) => {
-    const res = await axios.get(
-      `/analytics/monthly-sales?year=${year}`,
-      {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    const res = await API.get(`/analytics/monthly-sales?year=${year}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
       }
-    );
+    });
 
     const formatted = (res.data || []).map(item => ({
       month: months[item.month - 1],
@@ -94,38 +88,44 @@ function Dashboard() {
   };
 
   const fetchWeekly = async () => {
-    const res = await axios.get("/api/analytics/weekly-sales", {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    const res = await API.get("/analytics/weekly-sales", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
     });
 
     setWeeklyData(res.data || []);
   };
 
   const fetchCategory = async () => {
-    const res = await axios.get("/analytics/profit-category", {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    const res = await API.get("/analytics/profit-category", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
     });
 
     setCategoryData(res.data || []);
   };
 
   const fetchLowStock = async () => {
-    const res = await axios.get("/analytics/low-stock", {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    const res = await API.get("/analytics/low-stock", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
     });
 
     setLowStock(res.data || []);
   };
 
   const fetchTopProducts = async () => {
-    const res = await axios.get("/analytics/top-products", {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    const res = await API.get("/analytics/top-products", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
     });
 
     setTopProducts(res.data || []);
   };
-
-  // ================= DATA =================
 
   const coloredData = categoryData.map((item, index) => ({
     ...item,
@@ -169,10 +169,7 @@ function Dashboard() {
           <div className="chart_header">
             <p>Monthly Sales</p>
 
-            <select
-              value={selectedYear}
-              onChange={(e) => setSelectedYear(e.target.value)}
-            >
+            <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
               {yearlyData.map((item) => (
                 <option key={item.year} value={item.year}>
                   {item.year}
@@ -188,7 +185,6 @@ function Dashboard() {
               <YAxis />
               <Tooltip />
               <Legend />
-
               <Line type="monotone" dataKey="totalRevenue" stroke="#3b82f6" />
               <Line type="monotone" dataKey="totalProfit" stroke="#22c55e" />
             </LineChart>
@@ -197,7 +193,7 @@ function Dashboard() {
 
         {/* PIE + BAR */}
         <div className="top_grid">
-          {/* PIE */}
+
           <div className="chart_card">
             <p className="chart_title">Profit by Category</p>
 
@@ -218,33 +214,26 @@ function Dashboard() {
             </ResponsiveContainer>
           </div>
 
-          {/* BAR */}
           <div className="chart_card">
             <div className="chart_header">
-              <p>Revenue & profit Overview</p>
+              <p>Revenue & Profit Overview</p>
 
-              <select
-                value={viewType}
-                onChange={(e) => setViewType(e.target.value)}
-              >
-                
+              <select value={viewType} onChange={(e) => setViewType(e.target.value)}>
                 <option value="yearly">Yearly</option>
-                <option value="weekly">This weekly</option>
+                <option value="weekly">Weekly</option>
               </select>
             </div>
-              
+
             <ResponsiveContainer width="100%" height={260}>
               {chartData.length === 0 ? (
                 <div className="empty_chart">No data available 📉</div>
               ) : (
                 <BarChart data={chartData} barSize={25}>
                   <CartesianGrid strokeDasharray="3 3" />
-
                   <XAxis dataKey={viewType === "weekly" ? "day" : "year"} />
                   <YAxis />
                   <Tooltip />
                   <Legend />
-
                   <Bar dataKey="totalRevenue" fill="#3b82f6" />
                   <Bar dataKey="totalProfit" fill="#22c55e" />
                 </BarChart>
@@ -255,7 +244,7 @@ function Dashboard() {
 
         {/* BOTTOM */}
         <div className="bottom_grid">
-          {/* TOP PRODUCTS */}
+
           <div className="chart_card">
             <p className="chart_title">Top Products</p>
 
@@ -266,9 +255,7 @@ function Dashboard() {
                     <span className="rank">#{index + 1}</span>
                     <div>
                       <p className="item_name">{item.name}</p>
-                      <span className="item_sub">
-                        {item.totalQuantity} sold
-                      </span>
+                      <span className="item_sub">{item.totalQuantity} sold</span>
                     </div>
                   </div>
 
@@ -282,7 +269,6 @@ function Dashboard() {
             )}
           </div>
 
-          {/* LOW STOCK */}
           <div className="chart_card">
             <p className="chart_title">Low Stock</p>
 
@@ -293,7 +279,6 @@ function Dashboard() {
                     <p className="item_name">{item.name}</p>
                     <span className="item_sub">{item.category}</span>
                   </div>
-
                   <span className="stock_badge">{item.stock} left</span>
                 </div>
               ))
@@ -301,6 +286,7 @@ function Dashboard() {
               <p className="empty success">All stocks are good ✅</p>
             )}
           </div>
+
         </div>
       </div>
     </div>

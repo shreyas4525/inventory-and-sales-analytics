@@ -12,15 +12,15 @@ const Products = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+   const token = localStorage.getItem("token");
 
-    fetch("/products", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then(res => res.json())
-      .then(data => setProducts(data));
+API.get("/products", {
+  headers: {
+    Authorization: `Bearer ${token}`
+  }
+})
+  .then((res) => setProducts(res.data))
+  .catch((err) => console.log(err));
   }, []);
 
   // Filter products
