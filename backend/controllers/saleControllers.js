@@ -98,8 +98,12 @@ export const deleteSale = async (req, res) => {
 export const getSales = async (req, res) => {
   try {
     const sales = await Sale.find({ user: req.user.id })
-      .populate("items.product")
-      .sort({ createdAt: -1 });
+  .populate({
+    path: "items.product",
+    select: "name image category"
+  })
+  .lean()
+  .sort({ createdAt: -1 });
 
     res.status(200).json(sales);
 

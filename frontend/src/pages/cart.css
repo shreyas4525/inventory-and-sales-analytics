@@ -1,165 +1,338 @@
-body{
-    background-color: white;
+/* ── Cart Page ── */
+.cart_page {
+  max-width: 900px;
+  margin: 0 auto;
 }
+
+/* ── Page Header ── */
+.cart_page_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
 .cart_page h2 {
-  text-align: center;
-  margin-top: 50px;
-  margin-bottom: 20px;
-  font-size: 45px;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.4px;
+  margin: 0 0 4px;
 }
 
-/* Center everything */
-.cart_wrapper {
-  display: flex;
-  justify-content: center;
-  width: 100%;
+.cart_subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
 }
 
-/* Table container */
-.cart_table {
-  width: 90%;
-  max-width: 1600px;
-}
-
-/* Header */
-.cart_header {
-  display: grid;
-  grid-template-columns: 2.2fr 1.2fr 1.1fr 1fr;
-  padding: 15px 0;
-  border-bottom: 1px solid #ddd;
-  font-weight: 600;
-  font-size: 19px;
-  text-align: center;
-}
-
-/* Rows */
-.cart_row {
-  display: grid;
-  grid-template-columns: 2.2fr 1.2fr 1.1fr 1fr;
-  align-items: center;
-  padding: 15px 0;
-  border-bottom: 1px solid #eee;
-  text-align: center;
-}
-.cart_header span:first-child {
-  padding-left: 25px; /* adjust value if needed */
-  text-align: left;
-}
-
-/* Product section */
-.product_info {
+/* ── Scan Button ── */
+.scan_btn {
   display: flex;
   align-items: center;
-  gap: 10px;
-  justify-content: flex-start;
-}
-.product_info button{
-    border: none;
-}
-
-/* Image */
-.product_info img {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-}
-
-/* Quantity */
-.qty {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
-
-.qty button {
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  background: white;
+  gap: 8px;
+  padding: 10px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 500;
   cursor: pointer;
+  transition: all var(--transition);
 }
 
-/* Footer */
+.scan_btn:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  background: var(--blue-dim);
+}
+
+/* ── Stats Strip ── */
+.cart_stats {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.cart_stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 100px;
+  flex: 1;
+  max-width: 160px;
+}
+
+.cart_stat .stat_label {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+}
+
+.cart_stat .stat_value {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+.cart_stat .stat_green {
+  color: var(--green);
+}
+
+/* ── Table overrides for cart ── */
+.cart_table_container {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  overflow-x: auto;
+  margin-bottom: 24px;
+}
+
+/* Global CSS hides .table_container on mobile — override for cart */
+@media (max-width: 768px) {
+  .cart_table_container {
+    display: block !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+}
+
+/* Qty control */
+.qty_control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.qty_btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition), color var(--transition);
+}
+
+.qty_btn:hover {
+  background: var(--surface-3);
+  color: var(--text-primary);
+}
+
+.qty_num {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-primary);
+  padding: 0 12px;
+  min-width: 36px;
+  text-align: center;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  line-height: 32px;
+}
+
+/* Subtotal cell */
+.subtotal_cell {
+  font-family: var(--font-mono) !important;
+  font-size: 13.5px !important;
+  color: var(--green) !important;
+  font-weight: 500;
+}
+
+/* Remove button */
+.remove_btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--red);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: all var(--transition);
+}
+
+.remove_btn:hover {
+  background: var(--red-dim);
+  border-color: var(--red);
+  transform: translateY(-1px);
+}
+
+/* ── Footer ── */
 .cart_footer {
-  width: 90%;
-  max-width: 1000px;
-  margin: 30px auto 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px 28px;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
-/* Checkout button */
-.checkout {
-  background: #ff5a3c;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-/* SCAN BUTTON */
-.scanner_top {
+.cart_total_block {
   display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.scan_btn {
-  background: #111827;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 8px;
+.cart_total_label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+}
+
+.cart_total_value {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--green);
+  letter-spacing: -0.5px;
+}
+
+.checkout_btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--green);
+  color: #0a1a10;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
   border: none;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  font-size: 16px;
+  transition: all var(--transition);
+  box-shadow: 0 2px 12px rgba(52, 209, 122, 0.3);
 }
 
-/* MODAL BACKDROP */
+.checkout_btn:hover {
+  background: #2ec96d;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(52, 209, 122, 0.4);
+}
+
+.checkout_btn:active {
+  transform: translateY(0);
+}
+
+/* ── Scanner Modal ── */
 .scanner_modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
   display: flex;
   justify-content: center;
   align-items: center;
-
   z-index: 1000;
+  backdrop-filter: blur(4px);
 }
 
-/* SCANNER BOX */
 .scanner_box {
-  background: white;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
   padding: 20px;
-  border-radius: 12px;
-  width: 350px;
-  max-width: 90%;
+  width: 360px;
+  max-width: 92%;
 }
 
-/* HEADER */
 .scanner_header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
 }
 
-.scanner_header button {
-  background: none;
-  border: none;
-  font-size: 18px;
+.scanner_title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.scanner_close {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text-secondary);
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  transition: all var(--transition);
 }
 
-/* CAMERA AREA */
+.scanner_close:hover {
+  border-color: var(--red);
+  color: var(--red);
+}
+
 #reader {
   width: 100%;
   height: 230px;
   overflow: hidden;
+  border-radius: var(--radius-sm);
+  color: white;
 }
 
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .cart_page_header {
+    flex-direction: column;
+  }
+
+  .scan_btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .cart_footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .checkout_btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .cart_stat {
+    max-width: 100%;
+  }
+}

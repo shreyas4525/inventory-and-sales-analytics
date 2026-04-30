@@ -7,7 +7,7 @@
 .sales_page h2 {
   margin-bottom: 20px;
   font-weight: 600;
-  color: #111827;
+  color: #f7f7f7;
 }
 
 /* ===== Table Container ===== */
@@ -73,34 +73,31 @@ td.profit {
   justify-content: center;
   transition: all 0.2s ease;
   font-size: 14px;
+  background: transparent;
 }
 
-/* Button colors */
 .actions_btn button:first-child {
-  background: #e0f2fe;
+
   color: #0284c7;
 }
 
 .actions_btn button:last-child {
-  background: #fee2e2;
-  color: #dc2626;
+  color: #ff4747;
 }
 
-/* Hover */
 .actions_btn button:hover {
   transform: translateY(-2px) scale(1.05);
 }
 
 /* ===== Expanded Row ===== */
 .expanded_row td {
-  background: #f9fafb;
+  background: #010306;
   padding: 0;
 }
-/* Inner table (expanded) */
+
 .inner_table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 5px;
 }
 
 .inner_table th,
@@ -133,13 +130,11 @@ td.profit {
   padding: 15px;
 }
 
-/* Individual Item Card */
 .item {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
   align-items: center;
   gap: 10px;
-
   background: #ffffff;
   padding: 10px 12px;
   border-radius: 8px;
@@ -147,7 +142,6 @@ td.profit {
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-/* Profit inside item */
 .item span:last-child {
   color: #16a34a;
   font-weight: 500;
@@ -156,7 +150,7 @@ td.profit {
 /* ===== Filters ===== */
 .filters {
   display: flex;
-  gap: 20px;
+  gap: 12px;
   align-items: flex-end;
   margin-bottom: 20px;
   flex-wrap: wrap;
@@ -165,46 +159,75 @@ td.profit {
 .filter_group {
   display: flex;
   flex-direction: column;
+  gap: 5px;
+  min-width: 130px;
 }
 
 .filter_group label {
-  font-size: 12px;
-  margin-bottom: 5px;
-  color: #6b7280;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #9a9aaa;
 }
 
-.filter_group input {
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
-  background: #fff;
-  font-size: 14px;
+.filter_group input[type="date"] {
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: #1c1f2b;
+  color: #eeeef0;
+  font-size: 13.5px;
   cursor: pointer;
+  max-width: 300px;
+  box-sizing: border-box;
+  /* Fix native date picker icon color on dark bg */
+  color-scheme: dark;
 }
 
-.filter_group input:focus {
+.filter_group input[type="date"]:focus {
   outline: none;
-  border-color: #2563eb;
+  border-color: #4f8ef7;
+  box-shadow: 0 0 0 3px rgba(79,142,247,0.15);
 }
 
-/* Clear button */
+/* Clear button — aligns with inputs */
 .clear_btn {
-  height: 36px;
-  padding: 0 14px;
+  height: 40px;
+  padding: 0 18px;
   border: none;
-  border-radius: 8px;
-  background: #ef4444;
-  color: white;
+  border-radius: 10px;
+  background: rgba(240, 82, 82, 0.15);
+  color: #f05252;
+  border: 1px solid rgba(240,82,82,0.25);
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
   transition: 0.2s;
+  white-space: nowrap;
+  align-self: flex-end;
 }
 
 .clear_btn:hover {
-  background: #dc2626;
+  background: rgba(240,82,82,0.25);
+  border-color: rgba(240,82,82,0.4);
+}
+
+/* ===== Mobile cards (reuses product.css classes) ===== */
+.mobile_cards {
+  display: none;
+  flex-direction: column;
+  gap: 12px;
 }
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
+  .filter_group input[type="date"] {
+
+  max-width: 100%;
+
+
+}
   th, td {
     padding: 10px;
     font-size: 12px;
@@ -215,6 +238,36 @@ td.profit {
     align-items: flex-start;
     gap: 4px;
   }
+
+  /* Hide table, show cards */
+  .table_container {
+    display: none !important;
+    pointer-events: none;
+  }
+
+  .mobile_cards {
+    display: flex;
+    position: relative;
+    z-index: 1;
+    pointer-events: auto;
+  }
+
+  /* Stack filters vertically on mobile */
+  .filters {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .filter_group {
+    width: 100%;
+  }
+
+  .clear_btn {
+    width: 100%;
+    height: 42px;
+    justify-content: center;
+  }
 }
 
 @media (max-width: 600px) {
@@ -222,9 +275,9 @@ td.profit {
     padding: 10px;
   }
 
-  .actions_btns button {
-    width: 30px;
-    height: 30px;
-    font-size: 12px;
+  .actions_btn button {
+    width: 38px;
+    height: 38px;
+    font-size: 13px;
   }
 }
