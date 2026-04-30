@@ -13,17 +13,13 @@ const Products = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-
     API.get("/products", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      headers: { Authorization: `Bearer ${token}` }
     })
       .then((res) => setProducts(res.data))
       .catch((err) => console.log(err));
   }, []);
 
-  // Filter products
   const filteredProducts = products.filter(p => {
     const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
     const matchesCategory = category === "all" || p.category === category;
@@ -49,6 +45,26 @@ const Products = () => {
     }
     localStorage.setItem("cart", JSON.stringify(cart));
   };
+
+  const isEmpty = filteredProducts.length === 0;
+  const isFiltered = search || category !== "all";
+
+  const EmptyState = () => (
+    <div className="empty_state">
+      <i className="fa-solid fa-box-open" style={{ fontSize: "36px", color: "var(--text-muted)" }}></i>
+      {isFiltered ? (
+        <>
+          <p style={{ color: "var(--text-secondary)", fontWeight: 500 }}>No products found</p>
+          <p style={{ marginTop: 4 }}>Try adjusting your search or filter.</p>
+        </>
+      ) : (
+        <>
+          <p style={{ color: "var(--text-secondary)", fontWeight: 500 }}>No products yet</p>
+          <p style={{ marginTop: 4 }}>Get started by adding your first product.</p>
+        </>
+      )}
+    </div>
+  );
 
   return (
     <div className="layout">
@@ -78,12 +94,8 @@ const Products = () => {
                 ))}
               </select>
             </div>
-
             <div className="actions">
-              <button
-                className="new"
-                onClick={() => navigate("/products/create")}
-              >
+              <button className="new" onClick={() => navigate("/products/create")}>
                 + New Product
               </button>
             </div>
@@ -104,124 +116,123 @@ const Products = () => {
                   <th>Buttons</th>
                 </tr>
               </thead>
-
               <tbody>
-                {filteredProducts.map((item) => (
-                  <tr key={item._id}>
-                    <td className="product">
-                      <img
-                        src={item.image || "/noproduct.jpg"}
-                        alt={item.name}
-                        onError={(e) => (e.target.src = "/noproduct.jpg")}
-                      />
-                      <span>{item.name}</span>
+                {isEmpty ? (
+                  <tr>
+                    <td colSpan="8" style={{ padding: 0, border: "none" }}>
+                      <EmptyState />
                     </td>
-                    <td>{item.category || "—"}</td>
-                    <td>₹{item.costPrice}</td>
-                    <td>₹{item.sellingPrice}</td>
-                    <td className={item.stock < 0 ? "low_stock" : ""}>
-                      {item.stock}
-                    </td>
-                    <td>
+                  </tr>
+                ) : (
+                  filteredProducts.map((item) => (
+                    <tr key={item._id}>
+                      <td className="product">
+                        <img
+                          src={item.image || "/noproduct.jpg"}
+                          alt={item.name}
+                          onError={(e) => (e.target.src = "/noproduct.jpg")}
+                        />
+                        <span>{item.name}</span>
+                      </td>
+                      <td>{item.category || "—"}</td>
+                      <td>₹{item.costPrice}</td>
+                      <td>₹{item.sellingPrice}</td>
+                      <td className={item.stock < 0 ? "low_stock" : ""}>{item.stock}</td>
+                      <td>
+                        <span className={`status ${item.stock === 0 ? "out" : "active"}`}>
+                          {item.stock === 0 ? "Out of Stock" : "Active"}
+                        </span>
+                      </td>
+                      <td className="barcode_cell">
+                        <div className="barcode_box">
+                          <img
+                            src={`https://barcode.tec-it.com/barcode.ashx?data=${item.barcode}&code=Code128`}
+                            alt="barcode"
+                          />
+                        </div>
+                      </td>
+                      <td className="actions_btns">
+                        <button className="edit" onClick={() => navigate(`/products/edit/${item._id}`)}>
+                          <i className="fa-solid fa-pen-to-square" style={{ color: "rgb(112, 124, 255)" }}></i>
+                        </button>
+                        <button className="delete" onClick={() => handleDelete(item._id)}>
+                          <i className="fa-solid fa-trash-can" style={{ color: "rgb(253, 104, 104)" }}></i>
+                        </button>
+                        <button className="cart" onClick={() => addToCart(item)}>
+                          <i className="fa-solid fa-cart-shopping" style={{ color: "rgb(109, 255, 148)" }}></i>
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile Cards */}
+          <div className="mobile_cards">
+            {isEmpty ? (
+              <EmptyState />
+            ) : (
+              filteredProducts.map((item) => (
+                <div className="product_card" key={item._id}>
+                  <div className="product_card_top">
+                    <img
+                      src={item.image || "/noproduct.jpg"}
+                      alt={item.name}
+                      onError={(e) => (e.target.src = "/noproduct.jpg")}
+                    />
+                    <div>
+                      <div className="product_card_name">{item.name}</div>
+                      <div className="product_card_category">{item.category || "—"}</div>
+                    </div>
+                    <div className="product_card_meta">
                       <span className={`status ${item.stock === 0 ? "out" : "active"}`}>
                         {item.stock === 0 ? "Out of Stock" : "Active"}
                       </span>
-                    </td>
-                    <td className="barcode_cell">
+                    </div>
+                  </div>
+                  <div className="product_card_grid">
+                    <div className="product_card_field">
+                      <span className="field_label">Cost</span>
+                      <span className="field_value">₹{item.costPrice}</span>
+                    </div>
+                    <div className="product_card_field">
+                      <span className="field_label">Selling</span>
+                      <span className="field_value">₹{item.sellingPrice}</span>
+                    </div>
+                    <div className="product_card_field">
+                      <span className="field_label">Stock</span>
+                      <span className={`field_value ${item.stock < 0 ? "low_stock" : ""}`}>
+                        {item.stock}
+                      </span>
+                    </div>
+                    <div className="product_card_field">
+                      <span className="field_label">Barcode</span>
                       <div className="barcode_box">
                         <img
                           src={`https://barcode.tec-it.com/barcode.ashx?data=${item.barcode}&code=Code128`}
                           alt="barcode"
                         />
                       </div>
-                    </td>
-                    <td className="actions_btns">
-                      <button
-                        className="edit"
-                        onClick={() => navigate(`/products/edit/${item._id}`)}
-                      >
-                        <i className="fa-solid fa-pen-to-square" style={{ color: " rgb(112, 124, 255)" }}></i>
+                    </div>
+                  </div>
+                  <div className="product_card_footer">
+                    <div className="actions_btns">
+                      <button className="edit" onClick={() => navigate(`/products/edit/${item._id}`)}>
+                        <i className="fa-solid fa-pen-to-square" style={{ color: "rgb(49, 49, 50)" }}></i>
                       </button>
                       <button className="delete" onClick={() => handleDelete(item._id)}>
-                        <i className="fa-solid fa-trash-can" style={{ color: "rgb(253, 104, 104)" }}></i>
+                        <i className="fa-solid fa-trash-can" style={{ color: "rgb(254, 31, 31)" }}></i>
                       </button>
                       <button className="cart" onClick={() => addToCart(item)}>
-                        <i className="fa-solid fa-cart-shopping" style={{ color: " rgb(109, 255, 148)" }}></i>
+                        <i className="fa-solid fa-cart-shopping" style={{ color: "rgb(34, 248, 91)" }}></i>
                       </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Mobile Cards — shown via CSS on small screens */}
-          <div className="mobile_cards">
-            {filteredProducts.map((item) => (
-              <div className="product_card" key={item._id}>
-
-                <div className="product_card_top">
-                  <img
-                    src={item.image || "/noproduct.jpg"}
-                    alt={item.name}
-                    onError={(e) => (e.target.src = "/noproduct.jpg")}
-                  />
-                  <div>
-                    <div className="product_card_name">{item.name}</div>
-                    <div className="product_card_category">{item.category || "—"}</div>
-                  </div>
-                  <div className="product_card_meta">
-                    <span className={`status ${item.stock === 0 ? "out" : "active"}`}>
-                      {item.stock === 0 ? "Out of Stock" : "Active"}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="product_card_grid">
-                  <div className="product_card_field">
-                    <span className="field_label">Cost</span>
-                    <span className="field_value">₹{item.costPrice}</span>
-                  </div>
-                  <div className="product_card_field">
-                    <span className="field_label">Selling</span>
-                    <span className="field_value">₹{item.sellingPrice}</span>
-                  </div>
-                  <div className="product_card_field">
-                    <span className="field_label">Stock</span>
-                    <span className={`field_value ${item.stock < 0 ? "low_stock" : ""}`}>
-                      {item.stock}
-                    </span>
-                  </div>
-                  <div className="product_card_field">
-                    <span className="field_label">Barcode</span>
-                    <div className="barcode_box">
-                      <img
-                        src={`https://barcode.tec-it.com/barcode.ashx?data=${item.barcode}&code=Code128`}
-                        alt="barcode"
-                      />
                     </div>
                   </div>
                 </div>
-
-                <div className="product_card_footer">
-                  <div className="actions_btns">
-                    <button
-                      className="edit"
-                      onClick={() => navigate(`/products/edit/${item._id}`)}
-                    >
-                      <i className="fa-solid fa-pen-to-square" style={{ color: "rgb(49, 49, 50)" }}></i>
-                    </button>
-                    <button className="delete" onClick={() => handleDelete(item._id)}>
-                      <i className="fa-solid fa-trash-can" style={{ color: "rgb(254, 31, 31)" }}></i>
-                    </button>
-                    <button className="cart" onClick={() => addToCart(item)}>
-                      <i className="fa-solid fa-cart-shopping" style={{ color: "rgb(34, 248, 91)" }}></i>
-                    </button>
-                  </div>
-                </div>
-
-              </div>
-            ))}
+              ))
+            )}
           </div>
 
         </div>

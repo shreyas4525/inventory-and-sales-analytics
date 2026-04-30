@@ -34,6 +34,22 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
+/* Reusable empty chart placeholder */
+const EmptyChart = ({ height = 260, icon = "fa-chart-line", message = "No data yet" }) => (
+  <div style={{
+    height,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+    color: "var(--text-muted)"
+  }}>
+    <i className={`fa-solid ${icon}`} style={{ fontSize: 28 }}></i>
+    <span style={{ fontSize: 13 }}>{message}</span>
+  </div>
+);
+
 function Dashboard() {
   const [summary, setSummary] = useState({});
   const [yearlyData, setYearlyData] = useState([]);
@@ -70,10 +86,11 @@ function Dashboard() {
 
   const authHeader = () => ({ Authorization: `Bearer ${localStorage.getItem("token")}` });
 
-  const fetchSummary = async () => {
-    const res = await API.get("/analytics/summary", { headers: authHeader() });
-    setSummary(res.data);
-  };
+  const fetchSummary    = async () => { const res = await API.get("/analytics/summary",        { headers: authHeader() }); setSummary(res.data); };
+  const fetchWeekly     = async () => { const res = await API.get("/analytics/weekly-sales",    { headers: authHeader() }); setWeeklyData(res.data || []); };
+  const fetchCategory   = async () => { const res = await API.get("/analytics/profit-category", { headers: authHeader() }); setCategoryData(res.data || []); };
+  const fetchLowStock   = async () => { const res = await API.get("/analytics/low-stock",       { headers: authHeader() }); setLowStock(res.data || []); };
+  const fetchTopProducts= async () => { const res = await API.get("/analytics/top-products",    { headers: authHeader() }); setTopProducts(res.data || []); };
 
   const fetchYearly = async () => {
     const res = await API.get("/analytics/yearly-sales", { headers: authHeader() });
@@ -89,26 +106,6 @@ function Dashboard() {
       totalProfit: item.totalProfit
     }));
     setMonthlyData(formatted);
-  };
-
-  const fetchWeekly = async () => {
-    const res = await API.get("/analytics/weekly-sales", { headers: authHeader() });
-    setWeeklyData(res.data || []);
-  };
-
-  const fetchCategory = async () => {
-    const res = await API.get("/analytics/profit-category", { headers: authHeader() });
-    setCategoryData(res.data || []);
-  };
-
-  const fetchLowStock = async () => {
-    const res = await API.get("/analytics/low-stock", { headers: authHeader() });
-    setLowStock(res.data || []);
-  };
-
-  const fetchTopProducts = async () => {
-    const res = await API.get("/analytics/top-products", { headers: authHeader() });
-    setTopProducts(res.data || []);
   };
 
   const axisStyle = { fill: "#5c5c70", fontSize: 11.5, fontFamily: "DM Sans" };
@@ -127,19 +124,16 @@ function Dashboard() {
             <h1>₹{(summary.totalRevenue || 0).toLocaleString("en-IN")}</h1>
             <span className="card_icon">💰</span>
           </div>
-
           <div className="card green">
             <p>Total Profit</p>
             <h1>₹{(summary.totalProfit || 0).toLocaleString("en-IN")}</h1>
             <span className="card_icon">📈</span>
           </div>
-
           <div className="card amber">
             <p>Total Products</p>
             <h1>{summary.totalProducts || 0}</h1>
             <span className="card_icon">📦</span>
           </div>
-
           <div className="card red">
             <p>Low Stock</p>
             <h1>{summary.lowStockProducts || 0}</h1>
@@ -151,49 +145,59 @@ function Dashboard() {
         <div className="chart_card full_chart">
           <div className="chart_header">
             <p>Monthly Sales</p>
-            <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
-              {yearlyData.map((item) => (
-                <option key={item.year} value={item.year}>{item.year}</option>
-              ))}
-            </select>
+            {yearlyData.length > 0 && (
+              <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
+                {yearlyData.map((item) => (
+                  <option key={item.year} value={item.year}>{item.year}</option>
+                ))}
+              </select>
+            )}
           </div>
 
-          <ResponsiveContainer width="100%" height={isMobile ? 220 : 280}>
-            <LineChart data={monthlyData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
-              <XAxis dataKey="month" tick={axisStyle} axisLine={false} tickLine={false} />
-              <YAxis tick={axisStyle} axisLine={false} tickLine={false} width={55} tickFormatter={v => `₹${(v/1000).toFixed(0)}k`} />
-              <Tooltip content={<CustomTooltip />} />
-              <Legend wrapperStyle={{ fontSize: 12, fontFamily: "DM Sans", color: "#9a9aaa" }} />
-              <Line type="monotone" dataKey="totalRevenue" stroke="#4f8ef7" strokeWidth={2.5} dot={false} activeDot={{ r: 5, strokeWidth: 0 }} />
-              <Line type="monotone" dataKey="totalProfit" stroke="#34d17a" strokeWidth={2.5} dot={false} activeDot={{ r: 5, strokeWidth: 0 }} />
-            </LineChart>
-          </ResponsiveContainer>
+          {monthlyData.length === 0 ? (
+            <EmptyChart height={isMobile ? 220 : 280} icon="fa-chart-line" message="No monthly sales data yet" />
+          ) : (
+            <ResponsiveContainer width="100%" height={isMobile ? 220 : 280}>
+              <LineChart data={monthlyData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+                <XAxis dataKey="month" tick={axisStyle} axisLine={false} tickLine={false} />
+                <YAxis tick={axisStyle} axisLine={false} tickLine={false} width={55} tickFormatter={v => `₹${(v / 1000).toFixed(0)}k`} />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend wrapperStyle={{ fontSize: 12, fontFamily: "DM Sans", color: "#9a9aaa" }} />
+                <Line type="monotone" dataKey="totalRevenue" stroke="#4f8ef7" strokeWidth={2.5} dot={false} activeDot={{ r: 5, strokeWidth: 0 }} />
+                <Line type="monotone" dataKey="totalProfit" stroke="#34d17a" strokeWidth={2.5} dot={false} activeDot={{ r: 5, strokeWidth: 0 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
         </div>
 
         {/* PIE + BAR */}
         <div className="top_grid">
           <div className="chart_card">
             <p className="chart_title">Profit by Category</p>
-            <ResponsiveContainer width="100%" height={260}>
-              <PieChart>
-                <Pie
-                  data={categoryData}
-                  dataKey="totalProfit"
-                  nameKey="category"
-                  innerRadius={70}
-                  outerRadius={100}
-                  paddingAngle={4}
-                  stroke="none"
-                >
-                  {categoryData.map((_, index) => (
-                    <Cell key={index} fill={COLORS[index % COLORS.length]} opacity={0.9} />
-                  ))}
-                </Pie>
-                <Tooltip content={<CustomTooltip />} />
-                <Legend wrapperStyle={{ fontSize: 12, fontFamily: "DM Sans", color: "#9a9aaa" }} />
-              </PieChart>
-            </ResponsiveContainer>
+            {categoryData.length === 0 ? (
+              <EmptyChart icon="fa-chart-pie" message="No category data yet" />
+            ) : (
+              <ResponsiveContainer width="100%" height={260}>
+                <PieChart>
+                  <Pie
+                    data={categoryData}
+                    dataKey="totalProfit"
+                    nameKey="category"
+                    innerRadius={70}
+                    outerRadius={100}
+                    paddingAngle={4}
+                    stroke="none"
+                  >
+                    {categoryData.map((_, index) => (
+                      <Cell key={index} fill={COLORS[index % COLORS.length]} opacity={0.9} />
+                    ))}
+                  </Pie>
+                  <Tooltip content={<CustomTooltip />} />
+                  <Legend wrapperStyle={{ fontSize: 12, fontFamily: "DM Sans", color: "#9a9aaa" }} />
+                </PieChart>
+              </ResponsiveContainer>
+            )}
           </div>
 
           <div className="chart_card">
@@ -205,21 +209,21 @@ function Dashboard() {
               </select>
             </div>
 
-            <ResponsiveContainer width="100%" height={260}>
-              {chartData.length === 0 ? (
-                <div className="empty_chart">No data available 📉</div>
-              ) : (
+            {chartData.length === 0 ? (
+              <EmptyChart icon="fa-chart-bar" message={`No ${viewType} data yet`} />
+            ) : (
+              <ResponsiveContainer width="100%" height={260}>
                 <BarChart data={chartData} barSize={18} barGap={4}>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" vertical={false} />
                   <XAxis dataKey={viewType === "weekly" ? "day" : "year"} tick={axisStyle} axisLine={false} tickLine={false} />
-                  <YAxis tick={axisStyle} axisLine={false} tickLine={false} width={55} tickFormatter={v => `₹${(v/1000).toFixed(0)}k`} />
+                  <YAxis tick={axisStyle} axisLine={false} tickLine={false} width={55} tickFormatter={v => `₹${(v / 1000).toFixed(0)}k`} />
                   <Tooltip content={<CustomTooltip />} />
                   <Legend wrapperStyle={{ fontSize: 12, fontFamily: "DM Sans", color: "#9a9aaa" }} />
-                  <Bar dataKey="totalRevenue" fill="#4f8ef7" radius={[4,4,0,0]} opacity={0.9} />
-                  <Bar dataKey="totalProfit" fill="#34d17a" radius={[4,4,0,0]} opacity={0.9} />
+                  <Bar dataKey="totalRevenue" fill="#4f8ef7" radius={[4, 4, 0, 0]} opacity={0.9} />
+                  <Bar dataKey="totalProfit" fill="#34d17a" radius={[4, 4, 0, 0]} opacity={0.9} />
                 </BarChart>
-              )}
-            </ResponsiveContainer>
+              </ResponsiveContainer>
+            )}
           </div>
         </div>
 
@@ -227,7 +231,13 @@ function Dashboard() {
         <div className="bottom_grid">
           <div className="chart_card">
             <p className="chart_title">Top Products</p>
-            {topProducts.length > 0 ? (
+            {topProducts.length === 0 ? (
+              <div className="empty_state" style={{ padding: "32px 20px" }}>
+                <i className="fa-solid fa-trophy" style={{ fontSize: 28, color: "var(--text-muted)" }}></i>
+                <p style={{ marginTop: 8, color: "var(--text-secondary)", fontWeight: 500 }}>No sales recorded yet</p>
+                <p style={{ marginTop: 4, fontSize: 12 }}>Top products will appear once you start selling.</p>
+              </div>
+            ) : (
               topProducts.map((item, index) => (
                 <div key={index} className="top_product_row">
                   <div className="left">
@@ -240,14 +250,18 @@ function Dashboard() {
                   <div className="right">₹{item.totalProfit.toLocaleString("en-IN")}</div>
                 </div>
               ))
-            ) : (
-              <p className="empty">No data available</p>
             )}
           </div>
 
           <div className="chart_card">
             <p className="chart_title">Low Stock Alerts</p>
-            {lowStock.length > 0 ? (
+            {lowStock.length === 0 ? (
+              <div className="empty_state" style={{ padding: "32px 20px" }}>
+                <i className="fa-solid fa-circle-check" style={{ fontSize: 28, color: "var(--green)" }}></i>
+                <p style={{ marginTop: 8, color: "var(--green)", fontWeight: 500 }}>All stocks are healthy</p>
+                <p style={{ marginTop: 4, fontSize: 12 }}>No products are running low right now.</p>
+              </div>
+            ) : (
               lowStock.map((item, index) => (
                 <div key={index} className="low_stock_item">
                   <div>
@@ -257,11 +271,10 @@ function Dashboard() {
                   <span className="stock_badge">{item.stock} left</span>
                 </div>
               ))
-            ) : (
-              <p className="empty success">All stocks are good ✅</p>
             )}
           </div>
         </div>
+
       </div>
     </div>
   );
