@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./Signup.css";
 import API from "../../api/axios";
-import AuthNavbar from "../../components/layout/AuthNavbar";
+import AuthNavbar from "../../components/layout/AuthNavbar.jsx";
 
 function Login() {
   const navigate = useNavigate();

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import API from "../../api/axios";
 import "./Signup.css";
-import AuthNavbar from "../../components/layout/AuthNavbar";
+import AuthNavbar from "../../components/layout/AuthNavbar.jsx";
 
 function Signup() {
   const [step, setStep] = useState(1);
