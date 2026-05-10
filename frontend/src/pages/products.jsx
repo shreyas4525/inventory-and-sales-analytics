@@ -176,39 +176,49 @@ const Products = () => {
             ) : (
               filteredProducts.map((item) => (
                 <div className="product_card" key={item._id}>
-                  <div className="product_card_top">
-                    <img
-                      src={item.image || "/noproduct.jpg"}
-                      alt={item.name}
-                      onError={(e) => (e.target.src = "/noproduct.jpg")}
-                    />
-                    <div>
-                      <div className="product_card_name">{item.name}</div>
-                      <div className="product_card_category">{item.category || "—"}</div>
+                  <div className="product_card_body">
+
+                    {/* Top row: image, name, category, status badge */}
+                    <div className="product_card_top">
+                      <img
+                        src={item.image || "/noproduct.jpg"}
+                        alt={item.name}
+                        onError={(e) => (e.target.src = "/noproduct.jpg")}
+                      />
+                      <div>
+                        <div className="product_card_name">{item.name}</div>
+                        <div className="product_card_category">{item.category || "—"}</div>
+                      </div>
+                      <div className="product_card_meta">
+                        <span className={`status ${item.stock === 0 ? "out" : "active"}`}>
+                          {item.stock === 0 ? "Out of Stock" : "Active"}
+                        </span>
+                      </div>
                     </div>
-                    <div className="product_card_meta">
-                      <span className={`status ${item.stock === 0 ? "out" : "active"}`}>
-                        {item.stock === 0 ? "Out of Stock" : "Active"}
-                      </span>
+
+                    <div className="product_card_divider" />
+
+                    {/* 3-col stat grid */}
+                    <div className="product_card_grid">
+                      <div className="product_card_field">
+                        <span className="field_label">Cost</span>
+                        <span className="field_value">₹{item.costPrice}</span>
+                      </div>
+                      <div className="product_card_field">
+                        <span className="field_label">Selling</span>
+                        <span className="field_value green">₹{item.sellingPrice}</span>
+                      </div>
+                      <div className="product_card_field">
+                        <span className="field_label">Stock</span>
+                        <span className={`field_value ${item.stock === 0 ? "red" : ""} ${item.stock < 0 ? "red" : ""}`}>
+                          {item.stock}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                  <div className="product_card_grid">
-                    <div className="product_card_field">
-                      <span className="field_label">Cost</span>
-                      <span className="field_value">₹{item.costPrice}</span>
-                    </div>
-                    <div className="product_card_field">
-                      <span className="field_label">Selling</span>
-                      <span className="field_value">₹{item.sellingPrice}</span>
-                    </div>
-                    <div className="product_card_field">
-                      <span className="field_label">Stock</span>
-                      <span className={`field_value ${item.stock < 0 ? "low_stock" : ""}`}>
-                        {item.stock}
-                      </span>
-                    </div>
-                    <div className="product_card_field">
-                      <span className="field_label">Barcode</span>
+
+                    {/* Barcode strip */}
+                    <div className="barcode_strip">
+                      <span className="barcode_strip_label">Barcode</span>
                       <div className="barcode_box">
                         <img
                           src={`https://barcode.tec-it.com/barcode.ashx?data=${item.barcode}&code=Code128`}
@@ -216,19 +226,32 @@ const Products = () => {
                         />
                       </div>
                     </div>
+
                   </div>
+
+                  {/* Tab-bar footer */}
                   <div className="product_card_footer">
-                    <div className="actions_btns">
-                      <button className="edit" onClick={() => navigate(`/products/edit/${item._id}`)}>
-                        <i className="fa-solid fa-pen-to-square" style={{ color: "rgb(49, 49, 50)" }}></i>
-                      </button>
-                      <button className="delete" onClick={() => handleDelete(item._id)}>
-                        <i className="fa-solid fa-trash-can" style={{ color: "rgb(254, 31, 31)" }}></i>
-                      </button>
-                      <button className="cart" onClick={() => addToCart(item)}>
-                        <i className="fa-solid fa-cart-shopping" style={{ color: "rgb(34, 248, 91)" }}></i>
-                      </button>
-                    </div>
+                    <button
+                      className="foot_btn btn_edit"
+                      onClick={() => navigate(`/products/edit/${item._id}`)}
+                    >
+                      <i className="fa-solid fa-pen-to-square"></i>
+                      <span>Edit</span>
+                    </button>
+                    <button
+                      className="foot_btn btn_del"
+                      onClick={() => handleDelete(item._id)}
+                    >
+                      <i className="fa-solid fa-trash-can"></i>
+                      <span>Delete</span>
+                    </button>
+                    <button
+                      className="foot_btn btn_cart"
+                      onClick={() => addToCart(item)}
+                    >
+                      <i className="fa-solid fa-cart-shopping"></i>
+                      <span>Add to Cart</span>
+                    </button>
                   </div>
                 </div>
               ))

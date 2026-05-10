@@ -113,7 +113,6 @@ function Dashboard() {
   return (
     <div className="main_layout">
       <Sidebar />
-
       <div className="dashboard">
         <h2 className="title">Sales Dashboard</h2>
 
