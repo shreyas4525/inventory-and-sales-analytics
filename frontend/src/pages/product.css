@@ -42,6 +42,7 @@
   padding: 32px 36px 48px;
   background: var(--bg);
   min-height: 100vh;
+  /* Ensure main content is always interactable */
   position: relative;
   z-index: 0;
 }
@@ -219,6 +220,7 @@ th {
   white-space: nowrap;
 }
 
+/* Scoped to table_container so it doesn't bleed into mobile cards */
 .table_container td {
   padding: 14px 16px;
   text-align: left !important;
@@ -258,6 +260,7 @@ tbody tr:hover { background: var(--surface); }
   font-size: 13.5px;
 }
 
+/* ===== Price — scoped to table only ===== */
 .table_container td:nth-child(3),
 .table_container td:nth-child(4) {
   font-family: var(--font-mono);
@@ -314,7 +317,7 @@ tbody tr:hover { background: var(--surface); }
   background: transparent;
   border: none;
   padding: 0;
-  filter: invert(1) brightness(0.75);
+  filter: invert(1) brightness(0.82);
 }
 
 .barcode_box img {
@@ -324,7 +327,7 @@ tbody tr:hover { background: var(--surface); }
   display: block;
 }
 
-/* ===== Desktop Action Buttons ===== */
+/* ===== Action Buttons ===== */
 .actions_btns {
   display: flex;
   gap: 6px;
@@ -371,25 +374,18 @@ tbody tr:hover { background: var(--surface); }
 .mobile_cards {
   display: none;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
 .product_card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 22px;
-  overflow: hidden;
-  transition: border-color var(--transition), transform var(--transition);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  transition: border-color var(--transition);
 }
 
-.product_card:hover {
-  border-color: var(--border-hover);
-  transform: translateY(-1px);
-}
-
-.product_card_body {
-  padding: 16px 16px 14px;
-}
+.product_card:hover { border-color: var(--border-hover); }
 
 .product_card_top {
   display: flex;
@@ -399,9 +395,9 @@ tbody tr:hover { background: var(--surface); }
 }
 
 .product_card_top img {
-  width: 50px;
-  height: 50px;
-  border-radius: 14px;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
   object-fit: cover;
   border: 1px solid var(--border);
   background: var(--surface-3);
@@ -409,16 +405,14 @@ tbody tr:hover { background: var(--surface); }
 }
 
 .product_card_name {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 14.5px;
+  font-weight: 600;
+  font-size: 14px;
   color: var(--text-primary);
-  letter-spacing: -0.2px;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
 
 .product_card_category {
-  font-size: 11.5px;
+  font-size: 12px;
   color: var(--text-muted);
 }
 
@@ -427,134 +421,40 @@ tbody tr:hover { background: var(--surface); }
   flex-shrink: 0;
 }
 
-/* Mobile status badge — slightly tighter */
-.product_card_meta .status {
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  padding: 4px 10px;
-}
-
-.product_card_meta .status.active::before {
-  box-shadow: 0 0 6px var(--green);
-}
-
-.product_card_divider {
-  height: 1px;
-  background: var(--border);
-  margin: 0 0 12px;
-}
-
-/* 3-column stat grid */
 .product_card_grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 10px;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
 }
 
 .product_card_field {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 13px;
-  padding: 10px 11px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 3px;
 }
 
 .field_label {
-  font-size: 9.5px;
+  font-size: 10.5px;
   text-transform: uppercase;
-  letter-spacing: 0.10em;
+  letter-spacing: 0.07em;
   color: var(--text-muted);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .field_value {
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 13.5px;
   color: var(--text-primary);
-  font-weight: 500;
 }
 
-.field_value.green { color: var(--green); }
-.field_value.red   { color: var(--red); }
-
-/* Barcode full-width strip */
-.barcode_strip {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 13px;
-  padding: 9px 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.barcode_strip_label {
-  font-size: 9.5px;
-  text-transform: uppercase;
-  letter-spacing: 0.10em;
-  color: var(--text-muted);
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.barcode_strip .barcode_box {
-  filter: invert(1) brightness(0.70);
-  flex: 1;
-}
-
-.barcode_strip .barcode_box img {
-  width: 100%;
-  height: 26px;
-  object-fit: contain;
-  display: block;
-}
-
-/* ===== Card Footer Tab Bar ===== */
 .product_card_footer {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  border-top: 1px solid var(--border);
-  margin-top: 14px;
-}
-
-.foot_btn {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  gap: 5px;
-  padding: 13px 8px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-family: var(--font-body);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  transition: background var(--transition);
-  color: var(--text-secondary);
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
 }
-
-.foot_btn:not(:last-child) {
-  border-right: 1px solid var(--border);
-}
-
-.foot_btn i {
-  font-size: 17px;
-  transition: transform 0.15s;
-}
-
-.foot_btn:hover { background: var(--surface-3); }
-.foot_btn:hover i { transform: scale(1.15); }
-.foot_btn:active i { transform: scale(0.95); }
-
-.foot_btn.btn_edit  i, .foot_btn.btn_edit  span { color: #6e9fff; }
-.foot_btn.btn_del   i, .foot_btn.btn_del   span { color: var(--red); }
-.foot_btn.btn_cart  i, .foot_btn.btn_cart  span { color: var(--green); }
 
 /* ===== Responsive ===== */
 @media (max-width: 950px) {
@@ -568,6 +468,7 @@ tbody tr:hover { background: var(--surface); }
 @media (max-width: 768px) {
   .main_content {
     padding: 72px 16px 40px;
+    /* Sit above any sidebar overlay */
     position: relative;
     z-index: 1;
   }
@@ -576,17 +477,24 @@ tbody tr:hover { background: var(--surface); }
   .controls { width: 100%; }
   .stat_card { min-width: 80px; }
 
+  /* Hide table, show cards */
   .table_container {
     display: none !important;
     visibility: hidden;
     pointer-events: none;
   }
-
   .mobile_cards {
     display: flex;
     position: relative;
     z-index: 2;
     pointer-events: auto;
+  }
+
+  /* Make tap targets bigger on mobile */
+  .actions_btns button {
+    width: 40px;
+    height: 40px;
+    font-size: 15px;
   }
 }
 

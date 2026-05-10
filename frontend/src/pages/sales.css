@@ -220,6 +220,7 @@ td.profit {
   gap: 12px;
 }
 
+
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
   .filter_group input[type="date"] {
