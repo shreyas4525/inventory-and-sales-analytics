@@ -273,7 +273,7 @@
     box-shadow: none;
     /* KEY FIX: closed sidebar must not intercept any touches */
     pointer-events: none;
-    height: 100vh;
+    height: 82vh;
   }
 
   .sidebar.open {
