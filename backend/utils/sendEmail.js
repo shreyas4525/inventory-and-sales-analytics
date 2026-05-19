@@ -1,20 +1,21 @@
 import nodemailer from "nodemailer";
 
-const sendEmail = async (email, otp) => {
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL,
-      pass: process.env.PASS,
-    },
-  });
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,       // SSL — Render allows this
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASS,  // Gmail App Password
+  },
+});
 
+const sendEmail = async (email, otp) => {
   await transporter.sendMail({
-  from: `"InvenTrack" <${process.env.EMAIL}>`,
-  to: email,
-  subject: "InvenTrack OTP Verification",
-  html: `
-    <div style="font-family: Arial, sans-serif; background:#f4f6f8; padding:20px;">
+    from: `"InvenTrack" <${process.env.EMAIL}>`,
+    to: email,
+    subject: "InvenTrack OTP Verification",
+    html: `<div style="font-family: Arial, sans-serif; background:#f4f6f8; padding:20px;">
       <div style="max-width:500px; margin:auto; background:white; padding:25px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
         
         <h2 style="text-align:center; color:#1f8ea3; margin-bottom:10px;">
@@ -47,13 +48,12 @@ const sendEmail = async (email, otp) => {
         <hr style="margin:20px 0; border:none; border-top:1px solid #eee;" />
 
         <p style="font-size:12px; color:#aaa; text-align:center;">
-          If you didn’t request this, you can ignore this email.
+          If you didn't request this, you can ignore this email.
         </p>
 
       </div>
-    </div>
-  `
-});
+    </div>`
+  });
 };
 
 export default sendEmail;
